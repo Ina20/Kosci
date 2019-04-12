@@ -29,14 +29,27 @@ public class Main {
         frame.pack();
         frame.setVisible(true);
 
-
+//      Dlaczego sie nie commitujesz? xD
         ImagePanel imp1 = new ImagePanel();
-        imp1.setPreferredSize(new Dimension(100, 400));
+        imp1.setPreferredSize(new Dimension(200, 400));
         frame.getContentPane().add(imp1);
 
-        ImagePanel imp2 = new ImagePanel();
+        /*ImagePanel1 imp2 = new ImagePanel1();
         imp2.setPreferredSize(new Dimension(100, 400));
         frame.getContentPane().add(imp2);
+
+        ImagePanel2 imp3 = new ImagePanel2();
+        imp3.setPreferredSize(new Dimension(100, 400));
+        frame.getContentPane().add(imp3);
+
+        ImagePanel3 imp4 = new ImagePanel3();
+        imp4.setPreferredSize(new Dimension(100, 400));
+        frame.getContentPane().add(imp4);
+
+        ImagePanel4 imp5 = new ImagePanel4();
+        imp5.setPreferredSize(new Dimension(100, 400));
+        frame.getContentPane().add(imp5);
+*/
 
         switch(kostka1.Roll()){
             case 1:
@@ -78,8 +91,71 @@ public class Main {
                 dice2 = d6.getImage();
                 break;
         }
+        switch(kostka3.Roll()){
+            case 1:
+                dice3 = d1.getImage();
+                break;
+            case 2:
+                dice3 = d2.getImage();
+                break;
+            case 3:
+                dice3 = d3.getImage();
+                break;
+            case 4:
+                dice3 = d4.getImage();
+                break;
+            case 5:
+                dice3 = d5.getImage();
+                break;
+            case 6:
+                dice3 = d6.getImage();
+                break;
+        }
+        switch(kostka4.Roll()){
+            case 1:
+                dice4 = d1.getImage();
+                break;
+            case 2:
+                dice4 = d2.getImage();
+                break;
+            case 3:
+                dice4 = d3.getImage();
+                break;
+            case 4:
+                dice4 = d4.getImage();
+                break;
+            case 5:
+                dice4 = d5.getImage();
+                break;
+            case 6:
+                dice4 = d6.getImage();
+                break;
+        }
+        switch(kostka5.Roll()){
+            case 1:
+                dice5 = d1.getImage();
+                break;
+            case 2:
+                dice5 = d2.getImage();
+                break;
+            case 3:
+                dice5 = d3.getImage();
+                break;
+            case 4:
+                dice5 = d4.getImage();
+                break;
+            case 5:
+                dice5 = d5.getImage();
+                break;
+            case 6:
+                dice5 = d6.getImage();
+                break;
+        }
 
-        imp1.setImage(dice1);
-        imp2.setImage(dice2);
+        imp1.setImage(dice1,dice2,dice3,dice4,dice5);
+        //imp2.setImage(dice2);
+        //imp3.setImage(dice3);
+        //imp4.setImage(dice4);
+        //imp5.setImage(dice5);
     }
 }

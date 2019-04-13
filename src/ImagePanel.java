@@ -24,10 +24,10 @@ public class ImagePanel extends JPanel {
         super.paintComponent(g);
         //g.drawImage(image, 60, 60, this);
         //g.drawImage(image2, 90, 80,this);
-        g.drawImage(image, random(0, this.getWidth() - 70), random(0, this.getHeight() - 50), null);
-        g.drawImage(image1, random(0, this.getWidth() - 70), random(0, this.getHeight() - 50), null);
-        g.drawImage(image2, random(0, this.getWidth() - 70), random(0, this.getHeight() - 50), null);
-        g.drawImage(image3, random(0, this.getWidth() - 70), random(0, this.getHeight() - 50), null);
-        g.drawImage(image4, random(0, this.getWidth() - 70), random(0, this.getHeight() - 50), null);
+        g.drawImage(image, random(0, this.getWidth() - 70), random(0, this.getHeight() - 60), null);
+        g.drawImage(image1, random(0, this.getWidth() - 70), random(0, this.getHeight() - 60), null);
+        g.drawImage(image2, random(0, this.getWidth() - 70), random(0, this.getHeight() - 60), null);
+        g.drawImage(image3, random(0, this.getWidth() - 70), random(0, this.getHeight() - 60), null);
+        g.drawImage(image4, random(0, this.getWidth() - 70), random(0, this.getHeight() - 60), null);
     }
 }

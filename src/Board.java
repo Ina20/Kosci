@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 
 public class Board {
@@ -58,6 +59,33 @@ public class Board {
         for(int i=0; i<18; i++) {
             table.setRowHeight(i, 35);
         }
+
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        for(int i=0; i<3; i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+
+        table.setValueAt("Player 1",0,1);
+        table.setValueAt("Player 2",0,2);
+        table.setValueAt("Jedynki",1,0);
+        table.setValueAt("Dwójki",2,0);
+        table.setValueAt("Trójki",3,0);
+        table.setValueAt("Czwórki",4,0);
+        table.setValueAt("Piątki",5,0);
+        table.setValueAt("Szóstki",6,0);
+        table.setValueAt("Premia",7,0);
+        table.setValueAt("Suma",8,0);
+        table.setValueAt("3 jednakowe",9,0);
+        table.setValueAt("4 jednakowe",10,0);
+        table.setValueAt("Ful",11,0);
+        table.setValueAt("Mały strit",12,0);
+        table.setValueAt("Duży strit",13,0);
+        table.setValueAt("Generał",14,0);
+        table.setValueAt("Szansa",15,0);
+        table.setValueAt("Suma",16,0);
+        table.setValueAt("Razem",17,0);
+
 
         tablePanel = new JPanel();
         tablePanel.setPreferredSize(new Dimension(300, 700));

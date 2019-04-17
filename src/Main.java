@@ -3,7 +3,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 
 public class Main {
@@ -12,11 +11,15 @@ public class Main {
 
     public static void main(String[] args){
 
-        Dice kostka1 = new Dice();
-        Dice kostka2 = new Dice();
-        Dice kostka3 = new Dice();
-        Dice kostka4 = new Dice();
-        Dice kostka5 = new Dice();
+        int kostka1, kostka2, kostka3, kostka4, kostka5;
+        /*
+        GameLogic l = new GameLogic();
+        kostka1 = l.roll();
+        kostka2 = l.roll();
+        kostka3 = l.roll();
+        kostka4 = l.roll();
+        kostka5 = l.roll();
+        */
 
         ImageIcon d1 = new ImageIcon("src/kostka1.png");
         ImageIcon d2 = new ImageIcon("src/kostka2.png");
@@ -28,13 +31,20 @@ public class Main {
         Board board = new Board();
         board.createBoard();
 
-//      Dlaczego sie nie commitujesz? xD
 
         board.button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                int kostka1, kostka2, kostka3, kostka4, kostka5;
 
-                switch(kostka1.Roll()){
+                GameLogic l = new GameLogic();
+                kostka1 = l.roll();
+                kostka2 = l.roll();
+                kostka3 = l.roll();
+                kostka4 = l.roll();
+                kostka5 = l.roll();
+
+                switch(kostka1){
                     case 1:
                         dice1 = d1.getImage();
                         break;
@@ -54,7 +64,7 @@ public class Main {
                         dice1 = d6.getImage();
                         break;
                 }
-                switch(kostka2.Roll()){
+                switch(kostka2){
                     case 1:
                         dice2 = d1.getImage();
                         break;
@@ -74,7 +84,7 @@ public class Main {
                         dice2 = d6.getImage();
                         break;
                 }
-                switch(kostka3.Roll()){
+                switch(kostka3){
                     case 1:
                         dice3 = d1.getImage();
                         break;
@@ -94,7 +104,7 @@ public class Main {
                         dice3 = d6.getImage();
                         break;
                 }
-                switch(kostka4.Roll()){
+                switch(kostka4){
                     case 1:
                         dice4 = d1.getImage();
                         break;
@@ -114,7 +124,7 @@ public class Main {
                         dice4 = d6.getImage();
                         break;
                 }
-                switch(kostka5.Roll()){
+                switch(kostka5){
                     case 1:
                         dice5 = d1.getImage();
                         break;
@@ -134,7 +144,12 @@ public class Main {
                         dice5 = d6.getImage();
                         break;
                 }
+                int tab[] = l.check( kostka1,kostka2,kostka3,kostka4,kostka5 );
+                for(int i =0; i<13; i++) {
+                    System.out.println( tab[i] );
+                }
                 board.imp.setImage(dice1,dice2,dice3,dice4,dice5);
+
             }
         });
 
@@ -142,5 +157,7 @@ public class Main {
         //imp3.setImage(dice3);
         //imp4.setImage(dice4);
         //imp5.setImage(dice5);
+
+
     }
 }

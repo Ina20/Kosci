@@ -58,9 +58,15 @@ public class GameLogic {
            score[i] = a*(i+1);
            score[12] += a*(i+1);
            if(a >= 3)
-               score[6] = a*(i+1);
+               for(int j = 0; j<6; j++ ) {
+                   int b = dicesValue[j];
+                   score[6] += b*(j+1);
+               }
            if(a >= 4)
-               score[7] = a*(i+1);
+               for(int j = 0; j<6; j++ ) {
+                   int b = dicesValue[j];
+                   score[6] += b*(j+1);
+               }
            if(a == 5)
                score[11] = 50;
            if(a == 1) {
@@ -76,6 +82,7 @@ public class GameLogic {
                    score[8] = 25;
            }
         }
+
 
 
         return score;

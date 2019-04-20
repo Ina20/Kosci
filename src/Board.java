@@ -1,10 +1,7 @@
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellRenderer;
+import javax.swing.table.*;
 import java.awt.*;
+
 
 public class Board {
 
@@ -59,21 +56,20 @@ public class Board {
         frame.getContentPane().add(buttonPanel, c);
         buttonPanel.add(button, new FlowLayout(FlowLayout.CENTER));
 
-
-        String[] headings = {" ","Player 1","Player 2"};
-        Object[][] data = {{"Jedynki","",""},{"Dwójki","",""},{"Trójki","",""},{"Czwórki","",""},{"Piątki","",""},{"Szóstki","",""},{"Premia","",""},{"Suma","",""},{"3 jednakowe","",""},{"4 jednakowe","",""},{"Ful","",""},{"Mały strit","",""},{"Duży strit","",""},{"Generał","",""},{"Szansa","",""},{"Suma","",""},{"Razem","",""}};
-
-        table = new JTable(data, headings);
+        TableModel model = new TableModel();
+        table = new JTable(model);
         table.setPreferredSize(new Dimension(300, 595));
         for(int i=0; i<18; i++) {
             table.setRowHeight(i, 35);
         }
+        table.setRowSelectionAllowed(false);
 
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
         for(int i=0; i<3; i++) {
             table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
+        
 
         scrollPane = new JScrollPane(table);
         scrollPane.setPreferredSize(new Dimension(300, 617));

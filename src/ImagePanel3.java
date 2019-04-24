@@ -5,8 +5,13 @@ public class ImagePanel3 extends JPanel {
 
     private Image image3;
 
-    void setImage(Image image3) {
-        this.image3 = image3;
+    void setImage(Image image, Image image2) {
+        if(Main.click4) {
+            this.image3 = image2;
+        }else {
+            this.image3 = image;
+        }
+        repaint();
         repaint();
     }
 
@@ -18,8 +23,10 @@ public class ImagePanel3 extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        //g.drawImage(image3, 60, 60, this);
-        //g.drawImage(image2, 90, 80,this);
-        g.drawImage(image3, random(0, this.getWidth() - 80), random(0, this.getHeight() - 60), null);
+        if(Main.click4) {
+            g.drawImage(image3, 10, 10, this);
+        }else {
+            g.drawImage(image3, random(0, this.getWidth() - 70), random(0, this.getHeight() - 60), null);
+        }
     }
 }

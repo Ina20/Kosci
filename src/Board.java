@@ -80,18 +80,18 @@ public class Board {
                         jc.setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, Color.BLACK));
                     }
                     if (row == 7 || row == 16) {
-                        int top2 = 0;
-                        int left2 = 0;
-                        int bottom2 = 2;
-                        int right2 = 0;
-                        jc.setBorder(BorderFactory.createMatteBorder(top2, left2, bottom2, right2, Color.BLACK));
+                        int top = 0;
+                        int left = 0;
+                        int bottom = 2;
+                        int right = 0;
+                        jc.setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, Color.BLACK));
                     }
                     if (isRowSelected(row) && row != 6 && row != 7 && row != 15 && row != 16){
-                        int top2 = (row > 0 && isRowSelected(row-1))?1:2;
-                        int left2 = column == 0?2:0;
-                        int bottom2 = (row < getRowCount()-1 && isRowSelected(row + 1))?1:2;
-                        int right2 = column == getColumnCount()-1?2:0;
-                        jc.setBorder(BorderFactory.createMatteBorder(top2, left2, bottom2, right2, this.getSelectionBackground()));
+                        int top = (row > 0 && isRowSelected(row-1))?1:2;
+                        int left = column == 0?2:0;
+                        int bottom = (row < getRowCount()-1 && isRowSelected(row + 1))?1:2;
+                        int right = column == getColumnCount()-1?2:0;
+                        jc.setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, this.getSelectionBackground()));
                     }
                 return c;
             }

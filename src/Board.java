@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.border.MatteBorder;
 import javax.swing.table.*;
 import java.awt.*;
 
@@ -63,7 +64,42 @@ public class Board {
         buttonPanel.add(button, new FlowLayout(FlowLayout.CENTER));
 
         TableModel model = new TableModel();
-        table = new JTable(model);
+
+        table = new JTable(model){
+            @Override
+            public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+
+                Component c = super.prepareRenderer(renderer, row, column);
+                JComponent jc = (JComponent)c;
+
+                for (int i=0; i<17; i++) {
+                    if (row == 6 || row == 15) {
+                        int top = 2;
+                        int left = 0;
+                        int bottom = 2;
+                        int right = 0;
+                        jc.setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, Color.BLACK));
+                    }
+                    if (row == 7 || row == 16) {
+                        int top2 = 0;
+                        int left2 = 0;
+                        int bottom2 = 2;
+                        int right2 = 0;
+                        jc.setBorder(BorderFactory.createMatteBorder(top2, left2, bottom2, right2, Color.BLACK));
+                        }
+                    if (isRowSelected(row) && row != 6 && row != 7 && row != 15 && row != 16){
+                            int top2 = (row > 0 && isRowSelected(row-1))?1:2;
+                            int left2 = column == 0?2:0;
+                            int bottom2 = (row < getRowCount()-1 && isRowSelected(row + 1))?1:2;
+                            int right2 = column == getColumnCount()-1?2:0;
+
+                            jc.setBorder(BorderFactory.createMatteBorder(top2, left2, bottom2, right2, this.getSelectionBackground()));
+                    }
+                }
+                return c;
+            }
+        };
+
         table.setPreferredSize(new Dimension(300, 595));
         for(int i=0; i<18; i++) {
             table.setRowHeight(i, 35);

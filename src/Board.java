@@ -72,7 +72,6 @@ public class Board {
                 Component c = super.prepareRenderer(renderer, row, column);
                 JComponent jc = (JComponent)c;
 
-                for (int i=0; i<17; i++) {
                     if (row == 6 || row == 15) {
                         int top = 2;
                         int left = 0;
@@ -94,7 +93,6 @@ public class Board {
                         int right2 = column == getColumnCount()-1?2:0;
                         jc.setBorder(BorderFactory.createMatteBorder(top2, left2, bottom2, right2, this.getSelectionBackground()));
                     }
-                }
                 return c;
             }
         };

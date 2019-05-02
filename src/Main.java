@@ -12,6 +12,7 @@ public class Main {
     static Image dice1, dice2, dice3, dice4, dice5, zaz1, zaz2, zaz3, zaz4, zaz5;
     static ImageIcon d1, d2, d3, d4, d5, d6, z1, z2, z3, z4, z5, z6;
     static boolean click1, click2, click3, click4, click5;
+    static int kostka1, kostka2, kostka3, kostka4, kostka5;
 
     public static void main(String[] args){
 
@@ -43,6 +44,8 @@ public class Main {
         click3 = false;
         click4 = false;
         click5 = false;
+
+
 
         Board board = new Board();
         board.createBoard();
@@ -112,9 +115,7 @@ public class Main {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                int kostka1 = 0, kostka2 = 0, kostka3 = 0, kostka4 = 0, kostka5 = 0;
                 GameLogic l = new GameLogic();
-
 
                 if (!click1) {
                     kostka1 = l.roll();

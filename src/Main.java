@@ -1,4 +1,6 @@
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,12 +19,13 @@ public class Main {
 
     static Image dice1, dice2, dice3, dice4, dice5, zaz1, zaz2, zaz3, zaz4, zaz5;
     static ImageIcon d1, d2, d3, d4, d5, d6, z1, z2, z3, z4, z5, z6;
-    static boolean click1, click2, click3, click4, click5;
+    static boolean click1 = false, click2 = false, click3 = false, click4 = false, click5 = false;
     static int kostka1, kostka2, kostka3, kostka4, kostka5;
-    static int player = 1;
+    static int player = 0;
     static boolean turn = false;
     static PrintWriter pr;
     static int rolls = 3;
+    static int selected[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 
     public static void main(String[] args){
@@ -55,12 +58,6 @@ public class Main {
         z4 = new ImageIcon("src/zaznaczenie4.png");
         z5 = new ImageIcon("src/zaznaczenie5.png");
         z6 = new ImageIcon("src/zaznaczenie6.png");
-
-        click1 = false;
-        click2 = false;
-        click3 = false;
-        click4 = false;
-        click5 = false;
 
         if (player == 0) {
             turn = true;
@@ -175,7 +172,12 @@ public class Main {
                         int tab[] = l.check( kostka1, kostka2, kostka3, kostka4, kostka5 );
 
                         for (int i = 0; i < 15; i++) {
-                            board.table.setValueAt( tab[i], i, 1 );
+                            if(board.table.isRowSelected(i) == false && selected[i] == 0) {
+                                board.table.setValueAt(tab[i], i, 1);
+                            }else{
+                                selected[i] = 1;
+                                // Zmiana gracza
+                            }
                         }
 
                         board.imp.setImage( dice1, zaz1 );

@@ -17,16 +17,16 @@ public class Board {
     JPanel buttonPanel, tablePanel;
     JScrollPane scrollPane;
 
-    public void createBoard(){
+    public void createBoard() {
 
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints c = null;
-        Insets insets = new Insets(0,0,0,0);
+        Insets insets = new Insets(0, 0, 0, 0);
 
         frame = new JFrame("Kosci");
         frame.getContentPane().setLayout(layout);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setPreferredSize(new Dimension(800,700));
+        frame.setPreferredSize(new Dimension(800, 700));
 
         imp = new ImagePanel();
         //imp.setBackground(Color.black);
@@ -65,53 +65,59 @@ public class Board {
 
         TableModel model = new TableModel();
 
-        table = new JTable(model){
+        table = new JTable(model) {
             @Override
             public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
 
                 Component c = super.prepareRenderer(renderer, row, column);
-                JComponent jc = (JComponent)c;
+                JComponent jc = (JComponent) c;
 
-                    if (row == 6 || row == 15) {
-                        int top = 2;
-                        int left = 0;
-                        int bottom = 2;
-                        int right = 0;
-                        jc.setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, Color.BLACK));
-                    }
-                    if (row == 7 || row == 16) {
-                        int top = 0;
-                        int left = 0;
-                        int bottom = 2;
-                        int right = 0;
-                        jc.setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, Color.BLACK));
-                    }
-                    if (isRowSelected(row) && row != 6 && row != 7 && row != 15 && row != 16){
-                        int top = (row > 0 && isRowSelected(row-1))?1:2;
-                        int left = column == 0?2:0;
-                        int bottom = (row < getRowCount()-1 && isRowSelected(row + 1))?1:2;
-                        int right = column == getColumnCount()-1?2:0;
-                        jc.setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, this.getSelectionBackground()));
-                    }
+                if (row == 6 || row == 15) {
+                    int top = 2;
+                    int left = 0;
+                    int bottom = 2;
+                    int right = 0;
+                    jc.setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, Color.BLACK));
+                }
+                if (row == 7 || row == 16) {
+                    int top = 0;
+                    int left = 0;
+                    int bottom = 2;
+                    int right = 0;
+                    jc.setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, Color.BLACK));
+                }
+                if (isRowSelected(row) && row != 6 && row != 7 && row != 15 && row != 16) {
+                    int top = (row > 0 && isRowSelected(row - 1)) ? 1 : 2;
+                    int left = column == 0 ? 2 : 0;
+                    int bottom = (row < getRowCount() - 1 && isRowSelected(row + 1)) ? 1 : 2;
+                    int right = column == getColumnCount() - 1 ? 2 : 0;
+
+                    jc.setFont(new Font("Courier", Font.BOLD, 12));
+
+                    jc.setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, this.getSelectionBackground()));
+                }
+
                 return c;
             }
         };
 
         table.setPreferredSize(new Dimension(300, 595));
-        for(int i=0; i<18; i++) {
+        for (int i = 0; i < 18; i++) {
             table.setRowHeight(i, 35);
         }
         table.setRowSelectionAllowed(false);
 
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-        for(int i=0; i<3; i++) {
+        for (int i = 0; i < 3; i++) {
             table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
 
+        //DefaultTableCellRenderer boldRenderer = new DefaultTableCellRenderer();
+       // boldRenderer.setFont(new Font("Courier", Font.BOLD, 12));
 
         scrollPane = new JScrollPane(table);
-        scrollPane.setPreferredSize(new Dimension(300, 617));
+        scrollPane.setPreferredSize(new Dimension(300, 618));
 
         tablePanel = new JPanel();
         tablePanel.setPreferredSize(new Dimension(300, 700));

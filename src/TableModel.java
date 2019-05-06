@@ -1,11 +1,12 @@
 import javax.swing.*;
+import javax.swing.border.MatteBorder;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 
 public class TableModel extends AbstractTableModel {
 
-    String[] columnNames = {"","Player 1","Player 2"};
+    String[] columnNames = {"", Main.player1Name, Main.player2Name};
     Object[][] data = {{"Jedynki","",""},{"Dwójki","",""},{"Trójki","",""},{"Czwórki","",""},{"Piątki","",""},{"Szóstki","",""},{"Premia","",""},{"Suma","",""},{"3 jednakowe","",""},{"4 jednakowe","",""},{"Ful","",""},{"Mały strit","",""},{"Duży strit","",""},{"Generał","",""},{"Szansa","",""},{"Suma","",""},{"Razem","",""}};
 
     @Override
@@ -35,4 +36,5 @@ public class TableModel extends AbstractTableModel {
     public String getColumnName(int col){
         return columnNames[col];
     }
+
 }

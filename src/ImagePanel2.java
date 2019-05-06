@@ -4,6 +4,7 @@ import java.awt.*;
 public class ImagePanel2 extends JPanel {
 
     private Image image2;
+    ImageIcon bg3;
 
     void setImage(Image image, Image image2) {
         if(Main.click3) {
@@ -11,7 +12,6 @@ public class ImagePanel2 extends JPanel {
         }else {
             this.image2 = image;
         }
-        repaint();
         repaint();
     }
 
@@ -23,9 +23,12 @@ public class ImagePanel2 extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        bg3 = new ImageIcon("src/imp2_bg.png");
         if(Main.click3) {
+            g.drawImage(bg3.getImage(), 0, 0, null);
             g.drawImage(image2, 10, 10, this);
         }else {
+            g.drawImage(bg3.getImage(), 0, 0, null);
             g.drawImage(image2, random(0, this.getWidth() - 70), random(0, this.getHeight() - 60), null);
         }
     }

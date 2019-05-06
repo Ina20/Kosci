@@ -1,30 +1,64 @@
-
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.stream.*;
 
 
 public class Main {
 
     static Image dice1, dice2, dice3, dice4, dice5, zaz1, zaz2, zaz3, zaz4, zaz5;
     static ImageIcon d1, d2, d3, d4, d5, d6, z1, z2, z3, z4, z5, z6;
-    static boolean click1, click2, click3, click4, click5;
+    static boolean click1 = false, click2 = false, click3 = false, click4 = false, click5 = false;
     static int kostka1, kostka2, kostka3, kostka4, kostka5;
+    static int player = 0;
+    static boolean turn = false;
+    static PrintWriter pr;
+    static int rolls = 3;
+    static int selected[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    static String player1Name = "Player 1", player2Name = "Player 2";
+
 
     public static void main(String[] args){
 
-       // int kostka1, kostka2, kostka3, kostka4, kostka5;
-        /*
-        GameLogic l = new GameLogic();
-        kostka1 = l.roll();
-        kostka2 = l.roll();
-        kostka3 = l.roll();
-        kostka4 = l.roll();
-        kostka5 = l.roll();
-        */
+        if(player == 0) {
+            player1Name = JOptionPane.showInputDialog("Enter your name");
+            if(player1Name == null){
+                player1Name = "Player 1";
+            }
+        }else{
+            player2Name = JOptionPane.showInputDialog("Enter your name");
+            if(player2Name == null){
+                player2Name = "Player 2";
+            }
+        }
+
+        ServerSocket ss = null;
+        Socket s = null;
+
+        try {
+            if (player == 0) {
+                ss = new ServerSocket( 4999 );
+                s = ss.accept();
+            } else {
+                s = new Socket("localhost",4999);
+            }
+
+            pr = new PrintWriter( s.getOutputStream());
+
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
 
         d1 = new ImageIcon("src/kostka1.png");
         d2 = new ImageIcon("src/kostka2.png");
@@ -39,13 +73,9 @@ public class Main {
         z5 = new ImageIcon("src/zaznaczenie5.png");
         z6 = new ImageIcon("src/zaznaczenie6.png");
 
-        click1 = false;
-        click2 = false;
-        click3 = false;
-        click4 = false;
-        click5 = false;
-
-
+        if (player == 0) {
+            turn = true;
+        }
 
         Board board = new Board();
         board.createBoard();
@@ -111,182 +141,184 @@ public class Main {
             }
         });
 
-        board.button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        if (turn ) {
+            if (rolls > 0) {
+                board.button.addActionListener( new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        rolls -= 1;
+                        GameLogic l = new GameLogic();
 
-                GameLogic l = new GameLogic();
+                        if (!click1) {
+                            kostka1 = l.roll();
+                            dice1 = getDice( kostka1 );
+                            zaz1 = getZaz( kostka1 );
+                        } else {
+                        }
+                        if (!click2) {
+                            kostka2 = l.roll();
+                            dice2 = getDice( kostka2 );
+                            zaz2 = getZaz( kostka2 );
+                        } else {
+                        }
 
-                if (!click1) {
-                    kostka1 = l.roll();
-                    switch (kostka1) {
-                        case 1:
-                            dice1 = d1.getImage();
-                            zaz1 = z1.getImage();
-                            break;
-                        case 2:
-                            dice1 = d2.getImage();
-                            zaz1 = z2.getImage();
-                            break;
-                        case 3:
-                            dice1 = d3.getImage();
-                            zaz1 = z3.getImage();
-                            break;
-                        case 4:
-                            dice1 = d4.getImage();
-                            zaz1 = z4.getImage();
-                            break;
-                        case 5:
-                            dice1 = d5.getImage();
-                            zaz1 = z5.getImage();
-                            break;
-                        case 6:
-                            dice1 = d6.getImage();
-                            zaz1 = z6.getImage();
-                            break;
+                        if (!click3) {
+                            kostka3 = l.roll();
+                            dice3 = getDice( kostka3 );
+                            zaz3 = getZaz( kostka3 );
+                        } else {
+                        }
+
+                        if (!click4) {
+                            kostka4 = l.roll();
+                            dice4 = getDice( kostka4 );
+                            zaz4 = getZaz( kostka4 );
+                        } else {
+                        }
+
+                        if (!click5) {
+                            kostka5 = l.roll();
+                            dice5 = getDice( kostka5 );
+                            zaz5 = getZaz( kostka5 );
+                        } else {
+                        }
+
+                        int tab[] = l.check( kostka1, kostka2, kostka3, kostka4, kostka5 );
+
+                        for (int i = 0; i < 17; i++) {
+                            if(board.table.isRowSelected(i) == false && selected[i] == 0) {
+                                board.table.setValueAt(tab[i], i, 1);
+                                board.table.setValueAt(tab[7],7,1);
+                                board.table.setValueAt(tab[15],15,1);
+                                board.table.setValueAt(tab[7] + tab[15],16,1);
+                            }else{
+                                selected[i] = 1;
+                                if(i < 7) {
+                                    tab[7] += Integer.parseInt(String.valueOf(board.table.getValueAt(i, 1)));
+                                }else if(8 < i && i < 15) {
+                                    tab[15] += Integer.parseInt(String.valueOf(board.table.getValueAt(i,1)));
+                                }
+                                    // Zmiana gracza
+                            }
+                        }
+
+                        board.imp.setImage( dice1, zaz1 );
+                        board.imp1.setImage( dice2, zaz2 );
+                        board.imp2.setImage( dice3, zaz3 );
+                        board.imp3.setImage( dice4, zaz4 );
+                        board.imp4.setImage( dice5, zaz5 );
+
+                        pr.println( kostka1 + "," + kostka2 + "," + kostka3 + "," + kostka4 + "," + kostka5 );
+                        pr.flush();
                     }
-                }else{
-                }
 
-                if (!click2) {
-                    kostka2 = l.roll();
-                    switch (kostka2) {
-                        case 1:
-                            dice2 = d1.getImage();
-                            zaz2 = z1.getImage();
-                            break;
-                        case 2:
-                            dice2 = d2.getImage();
-                            zaz2 = z2.getImage();
-                            break;
-                        case 3:
-                            dice2 = d3.getImage();
-                            zaz2 = z3.getImage();
-                            break;
-                        case 4:
-                            dice2 = d4.getImage();
-                            zaz2 = z4.getImage();
-                            break;
-                        case 5:
-                            dice2 = d5.getImage();
-                            zaz2 = z5.getImage();
-                            break;
-                        case 6:
-                            dice2 = d6.getImage();
-                            zaz2 = z6.getImage();
-                            break;
-                    }
-                }else{
-                }
-
-                if (!click3) {
-                    kostka3 = l.roll();
-                    switch (kostka3) {
-                        case 1:
-                            dice3 = d1.getImage();
-                            zaz3 = z1.getImage();
-                            break;
-                        case 2:
-                            dice3 = d2.getImage();
-                            zaz3 = z2.getImage();
-                            break;
-                        case 3:
-                            dice3 = d3.getImage();
-                            zaz3 = z3.getImage();
-                            break;
-                        case 4:
-                            dice3 = d4.getImage();
-                            zaz3 = z4.getImage();
-                            break;
-                        case 5:
-                            dice3 = d5.getImage();
-                            zaz3 = z5.getImage();
-                            break;
-                        case 6:
-                            dice3 = d6.getImage();
-                            zaz3 = z6.getImage();
-                            break;
-                    }
-                }else{
-                }
-
-                if (!click4) {
-                    kostka4 = l.roll();
-                    switch (kostka4) {
-                        case 1:
-                            dice4 = d1.getImage();
-                            zaz4 = z1.getImage();
-                            break;
-                        case 2:
-                            dice4 = d2.getImage();
-                            zaz4 = z2.getImage();
-                            break;
-                        case 3:
-                            dice4 = d3.getImage();
-                            zaz4 = z3.getImage();
-                            break;
-                        case 4:
-                            dice4 = d4.getImage();
-                            zaz4 = z4.getImage();
-                            break;
-                        case 5:
-                            dice4 = d5.getImage();
-                            zaz4 = z5.getImage();
-                            break;
-                        case 6:
-                            dice4 = d6.getImage();
-                            zaz4 = z6.getImage();
-                            break;
-                    }
-                }else{
-                }
-
-                if (!click5) {
-                    kostka5 = l.roll();
-                    switch (kostka5) {
-                        case 1:
-                            dice5 = d1.getImage();
-                            zaz5 = z1.getImage();
-                            break;
-                        case 2:
-                            dice5 = d2.getImage();
-                            zaz5 = z2.getImage();
-                            break;
-                        case 3:
-                            dice5 = d3.getImage();
-                            zaz5 = z3.getImage();
-                            break;
-                        case 4:
-                            dice5 = d4.getImage();
-                            zaz5 = z4.getImage();
-                            break;
-                        case 5:
-                            dice5 = d5.getImage();
-                            zaz5 = z5.getImage();
-                            break;
-                        case 6:
-                            dice5 = d6.getImage();
-                            zaz5 = z6.getImage();
-                            break;
-                    }
-                }else{
-                }
-
-                int tab[] = l.check(kostka1, kostka2, kostka3, kostka4, kostka5);
-
-                for (int i = 0; i < 13; i++) {
-                    System.out.println(tab[i]);
-                    board.table.setValueAt(tab[i], i, 1);
-                }
-
-                board.imp.setImage(dice1, zaz1);
-                board.imp1.setImage(dice2, zaz2);
-                board.imp2.setImage(dice3, zaz3);
-                board.imp3.setImage(dice4, zaz4);
-                board.imp4.setImage(dice5, zaz5);
-                
+                } );
             }
-        });
+        }else {
+            GameLogic l = new GameLogic();
+            InputStreamReader in = null;
+            BufferedReader bf = null;
+            String str;
+            int[] kostki;
+            try {
+                in = new InputStreamReader( s.getInputStream());
+                bf = new BufferedReader(in);
+                while (!turn) {
+                    System.out.println("In try");
+                    str = bf.readLine();
+                    System.out.println( "server: " + str );
+                    kostki = parseSocketMsg(str);
+                    dice1 = getDice(kostki[0]);
+                    dice2 = getDice(kostki[1]);
+                    dice3 = getDice(kostki[2]);
+                    dice4 = getDice(kostki[3]);
+                    dice5 = getDice(kostki[4]);
 
+                    board.imp.setImage( dice1, zaz1 );
+                    board.imp1.setImage( dice2, zaz2 );
+                    board.imp2.setImage( dice3, zaz3 );
+                    board.imp3.setImage( dice4, zaz4 );
+                    board.imp4.setImage( dice5, zaz5 );
+
+                    int tab[] = l.check(kostki[0], kostki[1], kostki[2], kostki[3], kostki[4]);
+                    for (int i = 0; i < 17; i++) {
+                        board.table.setValueAt( tab[i], i, 1 );
+                    }
+
+                    System.out.println(kostki);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
+
+    private static Image getZaz(int kostka) {
+        Image zaz;
+        switch (kostka) {
+            case 1:
+                zaz = z1.getImage();
+                break;
+            case 2:
+                zaz = z2.getImage();
+                break;
+            case 3:
+                zaz = z3.getImage();
+                break;
+            case 4:
+                zaz = z4.getImage();
+                break;
+            case 5:
+                zaz = z5.getImage();
+                break;
+            case 6:
+                zaz = z6.getImage();
+                break;
+            default:
+                zaz = null;
+        }
+        return zaz;
+    }
+
+    private static Image getDice(int kostka) {
+        Image dice;
+        switch (kostka) {
+            case 1:
+                dice = d1.getImage();
+                break;
+            case 2:
+                dice = d2.getImage();
+                break;
+            case 3:
+                dice = d3.getImage();
+                break;
+            case 4:
+                dice = d4.getImage();
+
+                break;
+            case 5:
+                dice = d5.getImage();
+
+                break;
+            case 6:
+                dice = d6.getImage();
+                break;
+            default:
+                dice = null;
+        }
+        return dice;
+    }
+
+    private static int[] parseSocketMsg(String str) {
+        String[] msg = str.split(",");
+        int [] intArr = Stream.of(msg)
+                .mapToInt(nb -> Integer.parseInt(nb))
+                .toArray();
+
+        System.out.println(intArr);
+        if (intArr.length == 5)
+            return intArr;
+        return  null;
+    }
+
 }

@@ -14,7 +14,7 @@ public class Board {
     ImagePanel4 imp4;
     ImagePanel5 imp5;
     ImagePanel6 imp6;
-    JButton button;
+    JButton button, button1;
     JTable table;
     JScrollPane scrollPane;
 
@@ -66,6 +66,15 @@ public class Board {
         button.setBorder(BorderFactory.createMatteBorder(2,2,2,2, Color.WHITE));
         button.setForeground(Color.WHITE);
 
+        button1 = new JButton( "potwierdz");
+        button1.setPreferredSize(new Dimension(200, 50));
+        button1.setBackground(new Color(0,0,0,0));
+        button1.setOpaque(false);
+        button1.setFont(new Font("Kalam", Font.BOLD, 20));
+        button1.setBorder(BorderFactory.createMatteBorder(2,2,2,2, Color.WHITE));
+        button1.setForeground(Color.WHITE);
+
+
         JTextField text = new JTextField(  );
 
         if(Main.turn){
@@ -78,6 +87,7 @@ public class Board {
         imp6 = new ImagePanel6();
         imp6.setPreferredSize(new Dimension(500, 100));
         imp6.add(button, new FlowLayout(FlowLayout.CENTER));
+        imp6.add(button1, new FlowLayout(FlowLayout.LEFT));
         imp6.add( text, new FlowLayout( FlowLayout.RIGHT ));
         c = new GridBagConstraints(1, 5, 1, 1, 0.6, 0.2, GridBagConstraints.PAGE_END, GridBagConstraints.BOTH, insets, 160, 70);
         frame.getContentPane().add(imp6, c);

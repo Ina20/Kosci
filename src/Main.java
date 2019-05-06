@@ -185,6 +185,7 @@ public class Main {
                                     board.table.setValueAt(tab[7] + tab[15],16,1);
                                 }
                                 else {
+                                    selected[i] = 1;
                                     if (i < 7) {
                                         tab[7] += Integer.parseInt( String.valueOf( board.table.getValueAt( i, 1 ) ) );
                                     } else if (8 < i && i < 15) {
@@ -202,6 +203,7 @@ public class Main {
                                     board.table.setValueAt(tab[7] + tab[15],16,2);
                                 }
                                 else{
+                                    selected[i] = 1;
                                     if(i < 7) {
                                         tab[7] += Integer.parseInt(String.valueOf(board.table.getValueAt(i, 2)));
                                     }else if(8 < i && i < 15) {
@@ -221,49 +223,52 @@ public class Main {
                         pr.println( kostka1 + "," + kostka2 + "," + kostka3 + "," + kostka4 + "," + kostka5 );
                         pr.flush();
                     }
-                    else {
-                        kostka1 = 0; kostka2 = 0; kostka3 = 0; kostka4 = 0; kostka5 = 0;
-                        pr.println( kostka1 + "," + kostka2 + "," + kostka3 + "," + kostka4 + "," + kostka5 );
-                        pr.flush();
-                        click1 = false; click2 = false; click3 = false; click4 = false; click5 = false;
-                        pr.flush();
-                        gameLength += 1;
-                        for (int i = 0; i < 17; i++) {
-                            if (player == 0) {
-                                if (board.table.isRowSelected( i ) == true) {
-                                    selected[i] = 1;
-                                    a = Integer.parseInt( String.valueOf( board.table.getValueAt( i, 1 ) ) );
-                                    b = i;
-                                }
-                                pr.println( 7 + "," + Integer.parseInt( String.valueOf( board.table.getValueAt( 7, 1 ) ) ) );
-                                pr.println( 15 + "," + Integer.parseInt( String.valueOf( board.table.getValueAt( 15, 1 ) ) ) );
-                                pr.println( 16 + "," + Integer.parseInt( String.valueOf( board.table.getValueAt( 16, 1 ) ) ) );
-                            }
-                            if (player == 1) {
-                                if (board.table.isRowSelected( i ) == true) {
-                                    selected[i] = 1;
-                                    a = Integer.parseInt( String.valueOf( board.table.getValueAt( i, 2 ) ) );
-                                    b = i;
-                                }
-                                pr.println( 7 + "," + Integer.parseInt( String.valueOf( board.table.getValueAt( 7, 2 ) ) ) );
-                                pr.println( 15 + "," + Integer.parseInt( String.valueOf( board.table.getValueAt( 15, 2 ) ) ) );
-                                pr.println( 16 + "," + Integer.parseInt( String.valueOf( board.table.getValueAt( 16, 2 ) ) ) );
-                            }
-                        }
-                        pr.println(b + "," + a);
-                        turn = false;
-                        int code = 11;
-                        pr.println( code );
-                        rolls = 3;
-                        if(gameLength > 12)
-                            game = false;
-                        pr.println( code );
-                        pr.flush();
-                    }
                 }
             }
         }
     );
+
+        board.button1.addActionListener( new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                kostka1 = 0; kostka2 = 0; kostka3 = 0; kostka4 = 0; kostka5 = 0;
+                pr.println( kostka1 + "," + kostka2 + "," + kostka3 + "," + kostka4 + "," + kostka5 );
+                pr.flush();
+                click1 = false; click2 = false; click3 = false; click4 = false; click5 = false;
+                pr.flush();
+                gameLength += 1;
+                for (int i = 0; i < 17; i++) {
+                    if (player == 0) {
+                        if (board.table.isRowSelected( i ) == true) {
+                            a = Integer.parseInt( String.valueOf( board.table.getValueAt( i, 1 ) ) );
+                            b = i;
+                        }
+                        pr.println( 7 + "," + Integer.parseInt( String.valueOf( board.table.getValueAt( 7, 1 ) ) ) );
+                        pr.println( 15 + "," + Integer.parseInt( String.valueOf( board.table.getValueAt( 15, 1 ) ) ) );
+                        pr.println( 16 + "," + Integer.parseInt( String.valueOf( board.table.getValueAt( 16, 1 ) ) ) );
+                    }
+                    if (player == 1) {
+                        if (board.table.isRowSelected( i ) == true) {
+                            a = Integer.parseInt( String.valueOf( board.table.getValueAt( i, 2 ) ) );
+                            b = i;
+                        }
+                        pr.println( 7 + "," + Integer.parseInt( String.valueOf( board.table.getValueAt( 7, 2 ) ) ) );
+                        pr.println( 15 + "," + Integer.parseInt( String.valueOf( board.table.getValueAt( 15, 2 ) ) ) );
+                        pr.println( 16 + "," + Integer.parseInt( String.valueOf( board.table.getValueAt( 16, 2 ) ) ) );
+                    }
+                }
+                pr.println(b + "," + a);
+                turn = false;
+                int code = 11;
+                pr.println( code );
+                rolls = 3;
+                if(gameLength > 12)
+                    game = false;
+                pr.println( code );
+                pr.flush();
+            }
+            }
+            );
         while(game) {
             refresh( board, s );
         }

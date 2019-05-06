@@ -14,18 +14,10 @@ public class GameLogic {
     }
 
     public int[] check (int dice1, int dice2, int dice3, int dice4, int dice5){
-       /* ArrayList<Integer> diceList = new ArrayList();
-        diceList.set(0,dice1);
-        diceList.set(1,dice2);
-        diceList.set(2,dice3);
-        diceList.set(3,dice4);
-        diceList.set(4,dice5);
-       */
          int dices[] = {dice1,dice2,dice3,dice4,dice5};
          Arrays.sort(dices);
 
   //checking how many dice we threw
-
         int dicesValue[] = {0,0,0,0,0,0};
         for(int i = 0; i<5; i++) {
             int a = dices[i];

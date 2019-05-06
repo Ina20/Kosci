@@ -19,7 +19,7 @@ public class Main {
     static ImageIcon d1, d2, d3, d4, d5, d6, z1, z2, z3, z4, z5, z6;
     static boolean click1 = false, click2 = false, click3 = false, click4 = false, click5 = false;
     static int kostka1, kostka2, kostka3, kostka4, kostka5;
-    static int player = 1;
+    static int player = 0;
     static boolean turn = false;
     static PrintWriter pr;
     static int rolls = 3, gameLength = 0;
@@ -29,7 +29,7 @@ public class Main {
     static boolean game = true;
     static String player1Name = "Player 1", player2Name = "Player 2";
     static int a, b;
-
+    static int suma, suma1;
 
     public static void main(String[] args){
 
@@ -186,11 +186,6 @@ public class Main {
                                 }
                                 else {
                                     selected[i] = 1;
-                                    if (i < 7) {
-                                        tab[7] += Integer.parseInt( String.valueOf( board.table.getValueAt( i, 1 ) ) );
-                                    } else if (8 < i && i < 15) {
-                                        tab[15] += Integer.parseInt( String.valueOf( board.table.getValueAt( i, 1 ) ) );
-                                    }
                                 }
 
 
@@ -204,11 +199,6 @@ public class Main {
                                 }
                                 else{
                                     selected[i] = 1;
-                                    if(i < 7) {
-                                        tab[7] += Integer.parseInt(String.valueOf(board.table.getValueAt(i, 2)));
-                                    }else if(8 < i && i < 15) {
-                                        tab[15] += Integer.parseInt(String.valueOf(board.table.getValueAt(i,2)));
-                                    }
                                 }
 
                             }
@@ -239,7 +229,14 @@ public class Main {
                 gameLength += 1;
                 for (int i = 0; i < 17; i++) {
                     if (player == 0) {
+                        board.table.setValueAt(suma, 7, 1);
+                        board.table.setValueAt(suma1, 15, 1);
                         if (board.table.isRowSelected( i ) == true) {
+                            if (i < 7) {
+                                suma += Integer.parseInt( String.valueOf( board.table.getValueAt( i, 1 ) ) );
+                            } else if (8 < i && i < 15) {
+                                suma1 += Integer.parseInt( String.valueOf( board.table.getValueAt( i, 1 ) ) );
+                            }
                             a = Integer.parseInt( String.valueOf( board.table.getValueAt( i, 1 ) ) );
                             b = i;
                         }
@@ -248,7 +245,14 @@ public class Main {
                         pr.println( 16 + "," + Integer.parseInt( String.valueOf( board.table.getValueAt( 16, 1 ) ) ) );
                     }
                     if (player == 1) {
+                        board.table.setValueAt(suma, 7, 2);
+                        board.table.setValueAt(suma1, 15, 2);
                         if (board.table.isRowSelected( i ) == true) {
+                            if (i < 7) {
+                                suma += Integer.parseInt( String.valueOf( board.table.getValueAt( i, 2 ) ) );
+                            } else if (8 < i && i < 15) {
+                                suma1 += Integer.parseInt( String.valueOf( board.table.getValueAt( i, 2 ) ) );
+                            }
                             a = Integer.parseInt( String.valueOf( board.table.getValueAt( i, 2 ) ) );
                             b = i;
                         }

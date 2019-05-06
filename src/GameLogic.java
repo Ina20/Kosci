@@ -51,7 +51,7 @@ public class GameLogic {
             }
         }
         // score[] contains points for : {1,2,3,4,5,6,premia,suma,3x,4x,2+3x,ms,ds,g,sz}
-        int score[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+        int score[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
         int msOrDs = 0;
         int full = 0;
         for(int i = 0; i<6; i++){

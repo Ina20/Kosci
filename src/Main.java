@@ -1,6 +1,4 @@
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,7 +10,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.stream.*;
+import java.util.stream.Stream;
 
 
 public class Main {
@@ -21,29 +19,30 @@ public class Main {
     static ImageIcon d1, d2, d3, d4, d5, d6, z1, z2, z3, z4, z5, z6;
     static boolean click1 = false, click2 = false, click3 = false, click4 = false, click5 = false;
     static int kostka1, kostka2, kostka3, kostka4, kostka5;
-    static int player = 0;
+    static int player = 1;
     static boolean turn = false;
     static PrintWriter pr;
-    static int rolls = 3;
-    static int selected[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    static int rolls = 3, gameLength = 0;
+    static int selected[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    static int selected2[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    static int points[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    static boolean game = true;
+    static String player1Name = "Player 1", player2Name = "Player 2";
+    static int a, b;
 
 
     public static void main(String[] args){
-        ServerSocket ss = null;
-        Socket s = null;
 
-        try {
-            if (player == 0) {
-                ss = new ServerSocket( 4999 );
-                s = ss.accept();
-            } else {
-                s = new Socket("localhost",4999);
+        if(player == 0) {
+            player1Name = JOptionPane.showInputDialog("Enter your name");
+            if(player1Name == null){
+                player1Name = "Player 1";
             }
-
-            pr = new PrintWriter( s.getOutputStream());
-
-        } catch (IOException e1) {
-            e1.printStackTrace();
+        }else{
+            player2Name = JOptionPane.showInputDialog("Enter your name");
+            if(player2Name == null){
+                player2Name = "Player 2";
+            }
         }
 
         d1 = new ImageIcon("src/kostka1.png");
@@ -59,8 +58,21 @@ public class Main {
         z5 = new ImageIcon("src/zaznaczenie5.png");
         z6 = new ImageIcon("src/zaznaczenie6.png");
 
-        if (player == 0) {
-            turn = true;
+
+        //tworzenie serwera i klienta
+        ServerSocket ss = null;
+        Socket s = null;
+        try {
+            if (player == 0) {
+                turn = true;
+                ss = new ServerSocket( 4999 );
+                s = ss.accept();
+            } else {
+                s = new Socket("localhost",4999);
+            }
+            pr = new PrintWriter( s.getOutputStream());
+        } catch (IOException e1) {
+            e1.printStackTrace();
         }
 
         Board board = new Board();
@@ -127,59 +139,79 @@ public class Main {
             }
         });
 
-        if (turn ) {
-            if (rolls > 0) {
-                board.button.addActionListener( new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        rolls -= 1;
-                        GameLogic l = new GameLogic();
 
+        Socket finalS = s;
+        board.button.addActionListener( new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (turn) {
+                    GameLogic l = new GameLogic();
+                    if (rolls > 0) {
+                        rolls -= 1;
                         if (!click1) {
                             kostka1 = l.roll();
                             dice1 = getDice( kostka1 );
                             zaz1 = getZaz( kostka1 );
-                        } else {
                         }
                         if (!click2) {
                             kostka2 = l.roll();
                             dice2 = getDice( kostka2 );
                             zaz2 = getZaz( kostka2 );
-                        } else {
                         }
-
                         if (!click3) {
                             kostka3 = l.roll();
                             dice3 = getDice( kostka3 );
                             zaz3 = getZaz( kostka3 );
-                        } else {
                         }
-
                         if (!click4) {
                             kostka4 = l.roll();
                             dice4 = getDice( kostka4 );
                             zaz4 = getZaz( kostka4 );
-                        } else {
                         }
-
                         if (!click5) {
                             kostka5 = l.roll();
                             dice5 = getDice( kostka5 );
                             zaz5 = getZaz( kostka5 );
-                        } else {
                         }
 
                         int tab[] = l.check( kostka1, kostka2, kostka3, kostka4, kostka5 );
 
-                        for (int i = 0; i < 15; i++) {
-                            if(board.table.isRowSelected(i) == false && selected[i] == 0) {
-                                board.table.setValueAt(tab[i], i, 1);
-                            }else{
-                                selected[i] = 1;
-                                // Zmiana gracza
-                            }
-                        }
+                        for (int i = 0; i < 17; i++) {
+                            if (player == 0) {
+                                if (board.table.isRowSelected( i ) == false && selected[i] == 0) {
+                                    board.table.setValueAt( tab[i], i, 1 );
+                                    board.table.setValueAt(tab[7],7,1);
+                                    board.table.setValueAt(tab[15],15,1);
+                                    board.table.setValueAt(tab[7] + tab[15],16,1);
+                                }
+                                else {
+                                    if (i < 7) {
+                                        tab[7] += Integer.parseInt( String.valueOf( board.table.getValueAt( i, 1 ) ) );
+                                    } else if (8 < i && i < 15) {
+                                        tab[15] += Integer.parseInt( String.valueOf( board.table.getValueAt( i, 1 ) ) );
+                                    }
+                                }
 
+
+                            }
+                            if(player == 1) {
+                                if (board.table.isRowSelected( i ) == false && selected[i] == 0) {
+                                    board.table.setValueAt( tab[i], i, 2 );
+                                    board.table.setValueAt(tab[7],7,2);
+                                    board.table.setValueAt(tab[15],15,2);
+                                    board.table.setValueAt(tab[7] + tab[15],16,2);
+                                }
+                                else{
+                                    if(i < 7) {
+                                        tab[7] += Integer.parseInt(String.valueOf(board.table.getValueAt(i, 2)));
+                                    }else if(8 < i && i < 15) {
+                                        tab[15] += Integer.parseInt(String.valueOf(board.table.getValueAt(i,2)));
+                                    }
+                                }
+
+                            }
+
+                        }
                         board.imp.setImage( dice1, zaz1 );
                         board.imp1.setImage( dice2, zaz2 );
                         board.imp2.setImage( dice3, zaz3 );
@@ -189,28 +221,77 @@ public class Main {
                         pr.println( kostka1 + "," + kostka2 + "," + kostka3 + "," + kostka4 + "," + kostka5 );
                         pr.flush();
                     }
-
-                } );
+                    else {
+                        kostka1 = 0; kostka2 = 0; kostka3 = 0; kostka4 = 0; kostka5 = 0;
+                        pr.println( kostka1 + "," + kostka2 + "," + kostka3 + "," + kostka4 + "," + kostka5 );
+                        pr.flush();
+                        click1 = false; click2 = false; click3 = false; click4 = false; click5 = false;
+                        pr.flush();
+                        gameLength += 1;
+                        for (int i = 0; i < 17; i++) {
+                            if (player == 0) {
+                                if (board.table.isRowSelected( i ) == true) {
+                                    selected[i] = 1;
+                                    a = Integer.parseInt( String.valueOf( board.table.getValueAt( i, 1 ) ) );
+                                    b = i;
+                                }
+                                pr.println( 7 + "," + Integer.parseInt( String.valueOf( board.table.getValueAt( 7, 1 ) ) ) );
+                                pr.println( 15 + "," + Integer.parseInt( String.valueOf( board.table.getValueAt( 15, 1 ) ) ) );
+                                pr.println( 16 + "," + Integer.parseInt( String.valueOf( board.table.getValueAt( 16, 1 ) ) ) );
+                            }
+                            if (player == 1) {
+                                if (board.table.isRowSelected( i ) == true) {
+                                    selected[i] = 1;
+                                    a = Integer.parseInt( String.valueOf( board.table.getValueAt( i, 2 ) ) );
+                                    b = i;
+                                }
+                                pr.println( 7 + "," + Integer.parseInt( String.valueOf( board.table.getValueAt( 7, 2 ) ) ) );
+                                pr.println( 15 + "," + Integer.parseInt( String.valueOf( board.table.getValueAt( 15, 2 ) ) ) );
+                                pr.println( 16 + "," + Integer.parseInt( String.valueOf( board.table.getValueAt( 16, 2 ) ) ) );
+                            }
+                        }
+                        pr.println(b + "," + a);
+                        turn = false;
+                        int code = 11;
+                        pr.println( code );
+                        rolls = 3;
+                        if(gameLength > 12)
+                            game = false;
+                        pr.println( code );
+                        pr.flush();
+                    }
+                }
             }
-        }else {
-            GameLogic l = new GameLogic();
-            InputStreamReader in = null;
-            BufferedReader bf = null;
-            String str;
-            int[] kostki;
+        }
+    );
+        while(game) {
+            refresh( board, s );
+        }
+}
+
+    private static void refresh(Board board, Socket s) {
+        GameLogic l = new GameLogic();
+        InputStreamReader in = null;
+        BufferedReader bf = null;
+        String str;
+        int[] message;
+        try {
+            in = new InputStreamReader( s.getInputStream() );
+            bf = new BufferedReader( in );
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        while (!turn) {
             try {
-                in = new InputStreamReader( s.getInputStream());
-                bf = new BufferedReader(in);
-                while (!turn) {
-                    System.out.println("In try");
-                    str = bf.readLine();
-                    System.out.println( "server: " + str );
-                    kostki = parseSocketMsg(str);
-                    dice1 = getDice(kostki[0]);
-                    dice2 = getDice(kostki[1]);
-                    dice3 = getDice(kostki[2]);
-                    dice4 = getDice(kostki[3]);
-                    dice5 = getDice(kostki[4]);
+                str = bf.readLine();
+                System.out.println( "otrzymano: " + str );
+                message = parseSocketMsg( str );
+                if (message.length == 5) {
+                    dice1 = getDice( message[0] );
+                    dice2 = getDice( message[1] );
+                    dice3 = getDice( message[2] );
+                    dice4 = getDice( message[3] );
+                    dice5 = getDice( message[4] );
 
                     board.imp.setImage( dice1, zaz1 );
                     board.imp1.setImage( dice2, zaz2 );
@@ -218,18 +299,29 @@ public class Main {
                     board.imp3.setImage( dice4, zaz4 );
                     board.imp4.setImage( dice5, zaz5 );
 
-                    int tab[] = l.check(kostki[0], kostki[1], kostki[2], kostki[3], kostki[4]);
-                    for (int i = 0; i < 15; i++) {
-                        board.table.setValueAt( tab[i], i, 1 );
-                    }
-
-                    System.out.println(kostki);
+                    int tab[] = l.check( message[0], message[1], message[2], message[3], message[4] );
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
+
+                if (message[0] == 11) {
+                    turn = true;
+                    rolls = 3;
+                    System.out.println(turn);
+                }
+                if(message.length == 2) {
+                    if (player == 0)
+                        board.table.setValueAt( message[1], message[0], 2 );
+                    if (player == 1)
+                        board.table.setValueAt( message[1], message[0], 1 );
+                }
+
+                System.out.println( message );
+            } catch (IOException e1) {
+                e1.printStackTrace();
             }
         }
     }
+
+
 
     private static Image getZaz(int kostka) {
         Image zaz;
@@ -289,13 +381,19 @@ public class Main {
 
     private static int[] parseSocketMsg(String str) {
         String[] msg = str.split(",");
-        int [] intArr = Stream.of(msg)
+        int[] intArr = Stream.of(msg)
                 .mapToInt(nb -> Integer.parseInt(nb))
                 .toArray();
 
-        System.out.println(intArr);
         if (intArr.length == 5)
             return intArr;
+        if (intArr[0] == 11) {
+            turn = true;
+            return intArr;
+        }
+        if(intArr.length == 2)
+            return intArr;
+
         return  null;
     }
 

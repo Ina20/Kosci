@@ -30,6 +30,8 @@ public class Main {
 
     public static void main(String[] args){
 
+        GameLogic l = new GameLogic();
+
         d1 = new ImageIcon("src/kostka1.png");
         d2 = new ImageIcon("src/kostka2.png");
         d3 = new ImageIcon("src/kostka3.png");
@@ -61,9 +63,24 @@ public class Main {
         } catch (IOException e1) {
             e1.printStackTrace();
         }
+        InputStreamReader in = null;
+        BufferedReader bf = null;
+        String name;
+        try {
+            in = new InputStreamReader( s.getInputStream() );
+            bf = new BufferedReader( in );
+            name = bf.readLine();
+            player2Name = name;
+            pr.println( player1Name );
+            pr.flush();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
 
         Board board = new Board();
         board.createBoard();
+
+
 
         board.imp.addMouseListener(new MouseAdapter(){
             @Override
@@ -238,61 +255,53 @@ public class Main {
             }
             );
         while(game) {
-            refresh( board, s );
-        }
-}
-
-    private static void refresh(Board board, Socket s) {
-        GameLogic l = new GameLogic();
-        InputStreamReader in = null;
-        BufferedReader bf = null;
-        String str;
-        int[] message;
-        try {
-            in = new InputStreamReader( s.getInputStream() );
-            bf = new BufferedReader( in );
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-        while (!turn) {
+            String str;
+            int[] message;
             try {
-                str = bf.readLine();
-                System.out.println( "otrzymano: " + str );
-                message = parseSocketMsg( str );
-                if (message.length == 5) {
-                    dice1 = getDice( message[0] );
-                    dice2 = getDice( message[1] );
-                    dice3 = getDice( message[2] );
-                    dice4 = getDice( message[3] );
-                    dice5 = getDice( message[4] );
-
-                    board.imp.setImage( dice1, zaz1 );
-                    board.imp1.setImage( dice2, zaz2 );
-                    board.imp2.setImage( dice3, zaz3 );
-                    board.imp3.setImage( dice4, zaz4 );
-                    board.imp4.setImage( dice5, zaz5 );
-
-                    int tab[] = l.check( message[0], message[1], message[2], message[3], message[4] );
-                }
-
-                if (message[0] == 11) {
-                    turn = true;
-                    rolls = 3;
-                    board.text.setText("Tura gracza: " + "\n" + player1Name + "\nPozostało \nrzutów: " + rolls);
-                    System.out.println(turn);
-                }
-                if(message.length == 2) {
-                    board.table.setValueAt( message[1], message[0], 2 );
-                }
-                System.out.println( message );
+                in = new InputStreamReader( s.getInputStream() );
+                bf = new BufferedReader( in );
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
+            while (!turn) {
+                try {
+                    str = bf.readLine();
+                    System.out.println( "otrzymano: " + str );
+                    message = parseSocketMsg( str );
+                    if (message.length == 5) {
+                        dice1 = getDice( message[0] );
+                        dice2 = getDice( message[1] );
+                        dice3 = getDice( message[2] );
+                        dice4 = getDice( message[3] );
+                        dice5 = getDice( message[4] );
+
+                        board.imp.setImage( dice1, zaz1 );
+                        board.imp1.setImage( dice2, zaz2 );
+                        board.imp2.setImage( dice3, zaz3 );
+                        board.imp3.setImage( dice4, zaz4 );
+                        board.imp4.setImage( dice5, zaz5 );
+
+                        int tab[] = l.check( message[0], message[1], message[2], message[3], message[4] );
+                    }
+
+                    if (message[0] == 11) {
+                        turn = true;
+                        rolls = 3;
+                        board.text.setText("Tura gracza: " + "\n" + player1Name + "\nPozostało \nrzutów: " + rolls);
+                        System.out.println(turn);
+                    }
+                    if(message.length == 2) {
+                        board.table.setValueAt( message[1], message[0], 2 );
+                    }
+                    System.out.println( message );
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
         }
-    }
 
-
-    private static Image getZaz(int kostka) {
+}
+private static Image getZaz(int kostka) {
         Image zaz;
         switch (kostka) {
             case 1:

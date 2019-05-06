@@ -29,7 +29,7 @@ public class Main {
     static boolean game = true;
     static String player1Name = "Player 1", player2Name = "Player 2";
     static int a, b;
-    static int suma, suma1;
+    static int suma11, suma12, suma21, suma22;
 
     public static void main(String[] args){
 
@@ -180,8 +180,8 @@ public class Main {
                             if (player == 0) {
                                 if (board.table.isRowSelected( i ) == false && selected[i] == 0) {
                                     board.table.setValueAt( tab[i], i, 1 );
-                                    board.table.setValueAt(tab[7],7,1);
-                                    board.table.setValueAt(tab[15],15,1);
+                                    board.table.setValueAt(suma11,7,1);
+                                    board.table.setValueAt(suma12,15,1);
                                     board.table.setValueAt(tab[7] + tab[15],16,1);
                                 }
                                 else {
@@ -193,8 +193,8 @@ public class Main {
                             if(player == 1) {
                                 if (board.table.isRowSelected( i ) == false && selected[i] == 0) {
                                     board.table.setValueAt( tab[i], i, 2 );
-                                    board.table.setValueAt(tab[7],7,2);
-                                    board.table.setValueAt(tab[15],15,2);
+                                    board.table.setValueAt(suma21,7,2);
+                                    board.table.setValueAt(suma22,15,2);
                                     board.table.setValueAt(tab[7] + tab[15],16,2);
                                 }
                                 else{
@@ -229,13 +229,13 @@ public class Main {
                 gameLength += 1;
                 for (int i = 0; i < 17; i++) {
                     if (player == 0) {
-                        board.table.setValueAt(suma, 7, 1);
-                        board.table.setValueAt(suma1, 15, 1);
+                        board.table.setValueAt(suma11, 7, 1);
+                        board.table.setValueAt(suma12, 15, 1);
                         if (board.table.isRowSelected( i ) == true) {
                             if (i < 7) {
-                                suma += Integer.parseInt( String.valueOf( board.table.getValueAt( i, 1 ) ) );
-                            } else if (8 < i && i < 15) {
-                                suma1 += Integer.parseInt( String.valueOf( board.table.getValueAt( i, 1 ) ) );
+                                suma11 += Integer.parseInt( String.valueOf( board.table.getValueAt( i, 1 ) ) );
+                            } else if (7 < i && i < 15) {
+                                suma12 += Integer.parseInt( String.valueOf( board.table.getValueAt( i, 1 ) ) );
                             }
                             a = Integer.parseInt( String.valueOf( board.table.getValueAt( i, 1 ) ) );
                             b = i;
@@ -245,13 +245,13 @@ public class Main {
                         pr.println( 16 + "," + Integer.parseInt( String.valueOf( board.table.getValueAt( 16, 1 ) ) ) );
                     }
                     if (player == 1) {
-                        board.table.setValueAt(suma, 7, 2);
-                        board.table.setValueAt(suma1, 15, 2);
+                        board.table.setValueAt(suma21, 7, 2);
+                        board.table.setValueAt(suma22, 15, 2);
                         if (board.table.isRowSelected( i ) == true) {
                             if (i < 7) {
-                                suma += Integer.parseInt( String.valueOf( board.table.getValueAt( i, 2 ) ) );
-                            } else if (8 < i && i < 15) {
-                                suma1 += Integer.parseInt( String.valueOf( board.table.getValueAt( i, 2 ) ) );
+                                suma21 += Integer.parseInt( String.valueOf( board.table.getValueAt( i, 2 ) ) );
+                            } else if (7 < i && i < 15) {
+                                suma22 += Integer.parseInt( String.valueOf( board.table.getValueAt( i, 2 ) ) );
                             }
                             a = Integer.parseInt( String.valueOf( board.table.getValueAt( i, 2 ) ) );
                             b = i;

@@ -22,8 +22,10 @@ public class Main {
     static int player = 1;
     static boolean turn = false;
     static PrintWriter pr;
-    static int rolls = 4;
+    static int rolls = 3;
     static int selected[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    static int points[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    static boolean game = true;
 
 
     public static void main(String[] args){
@@ -127,55 +129,60 @@ public class Main {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (turn) {
-                    rolls -= 1;
                     GameLogic l = new GameLogic();
                     if (rolls > 0) {
+                        rolls -= 1;
                         if (!click1) {
                             kostka1 = l.roll();
                             dice1 = getDice( kostka1 );
                             zaz1 = getZaz( kostka1 );
-                        } else {
                         }
                         if (!click2) {
                             kostka2 = l.roll();
                             dice2 = getDice( kostka2 );
                             zaz2 = getZaz( kostka2 );
-                        } else {
                         }
-
                         if (!click3) {
                             kostka3 = l.roll();
                             dice3 = getDice( kostka3 );
                             zaz3 = getZaz( kostka3 );
-                        } else {
                         }
-
                         if (!click4) {
                             kostka4 = l.roll();
                             dice4 = getDice( kostka4 );
                             zaz4 = getZaz( kostka4 );
-                        } else {
                         }
-
                         if (!click5) {
                             kostka5 = l.roll();
                             dice5 = getDice( kostka5 );
                             zaz5 = getZaz( kostka5 );
-                        } else {
                         }
 
                         int tab[] = l.check( kostka1, kostka2, kostka3, kostka4, kostka5 );
 
                         for (int i = 0; i < 15; i++) {
-                            if (board.table.isRowSelected( i ) == false && selected[i] == 0) {
-                                board.table.setValueAt( tab[i], i, 1 );
-                            } else {
-                                selected[i] = 1;
-                                //zmiana gracza
-                                turn = false;
-                                int code = 11;
-                                pr.println( code );
-                                pr.flush();
+                            if (player == 0) {
+                                if (board.table.isRowSelected( i ) == false && selected[i] == 0) {
+                                    board.table.setValueAt( tab[i], i, 1 );
+                                }
+                                else {
+                                    selected[i] = 1;
+                                    points[i] = tab[i];
+                                    //zmiana gracza
+                                }
+                                if(selected[i] == 1)
+                                    board.table.setValueAt( points[i], i, 1 );
+                            }
+                            if(player == 1) {
+                                if (board.table.isRowSelected( i ) == false && selected[i] == 0) {
+                                    board.table.setValueAt( tab[i], i, 2 );
+                                } else {
+                                    selected[i] = 1;
+                                    points[i] = tab[i];
+                                    //zmiana gracza
+                                }
+                                if(selected[i] == 1)
+                                    board.table.setValueAt( points[i], i, 1 );
                             }
 
                         }
@@ -188,70 +195,78 @@ public class Main {
 
                         pr.println( kostka1 + "," + kostka2 + "," + kostka3 + "," + kostka4 + "," + kostka5 );
                         pr.flush();
-
-                    } else {
+                    }
+                    else {
                         turn = false;
                         int code = 11;
+                        rolls = 3;
                         pr.println( code );
                         pr.flush();
                   }
-                } else {
-                    GameLogic l = new GameLogic();
-                    InputStreamReader in = null;
-                    BufferedReader bf = null;
-                    String str;
-                    int[] kostki;
-                    try {
-                        in = new InputStreamReader( finalS.getInputStream() );
-                        bf = new BufferedReader( in );
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                    }
-                    while (!turn) {
-                        try {
-                            str = bf.readLine();
-                            System.out.println( "server: " + str );
-                            kostki = parseSocketMsg( str );
-                            if (kostki.length == 5) {
-                                dice1 = getDice( kostki[0] );
-                                dice2 = getDice( kostki[1] );
-                                dice3 = getDice( kostki[2] );
-                                dice4 = getDice( kostki[3] );
-                                dice5 = getDice( kostki[4] );
-
-                                board.imp.setImage( dice1, zaz1 );
-                                board.imp1.setImage( dice2, zaz2 );
-                                board.imp2.setImage( dice3, zaz3 );
-                                board.imp3.setImage( dice4, zaz4 );
-                                board.imp4.setImage( dice5, zaz5 );
-
-                                int tab[] = l.check( kostki[0], kostki[1], kostki[2], kostki[3], kostki[4] );
-                                 if(player == 0) {
-                                      for (int i = 0; i < 15; i++) {
-                                          board.table.setValueAt( tab[i], i, 1 );
-                                      }
-                                 }
-                                 else {
-                                      for (int i = 0; i < 15; i++) {
-                                          board.table.setValueAt( tab[i], i, 2 );
-                                      }
-                                 }
-                            }
-                            if (kostki[0] == 11) {
-                                turn = true;
-                                rolls = 4;
-                                System.out.println(turn);
-                            }
-                            System.out.println( kostki );
-                        } catch (IOException e1) {
-                            e1.printStackTrace();
-                        }
-                    }
                 }
             }
         }
     );
+        while(game) {
+            refresh( board, s );
+        }
 }
+
+    private static void refresh(Board board, Socket s) {
+        GameLogic l = new GameLogic();
+        InputStreamReader in = null;
+        BufferedReader bf = null;
+        String str;
+        int[] message;
+        try {
+            in = new InputStreamReader( s.getInputStream() );
+            bf = new BufferedReader( in );
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        while (!turn) {
+            try {
+                str = bf.readLine();
+                System.out.println( "otrzymano: " + str );
+                message = parseSocketMsg( str );
+                if (message.length == 5) {
+                    dice1 = getDice( message[0] );
+                    dice2 = getDice( message[1] );
+                    dice3 = getDice( message[2] );
+                    dice4 = getDice( message[3] );
+                    dice5 = getDice( message[4] );
+
+                    board.imp.setImage( dice1, zaz1 );
+                    board.imp1.setImage( dice2, zaz2 );
+                    board.imp2.setImage( dice3, zaz3 );
+                    board.imp3.setImage( dice4, zaz4 );
+                    board.imp4.setImage( dice5, zaz5 );
+
+                    int tab[] = l.check( message[0], message[1], message[2], message[3], message[4] );
+                    if(player == 0) {
+                        for (int i = 0; i < 15; i++) {
+                            board.table.setValueAt( tab[i], i, 2 );
+                        }
+                    }
+                    else {
+                        for (int i = 0; i < 15; i++) {
+                            board.table.setValueAt( tab[i], i, 1 );
+                        }
+                    }
+                }
+                if (message[0] == 11) {
+                    turn = true;
+                    rolls = 3;
+                    System.out.println(turn);
+                }
+                System.out.println( message );
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
+    }
+
+
 
     private static Image getZaz(int kostka) {
         Image zaz;

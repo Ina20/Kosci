@@ -170,8 +170,7 @@ public class Main {
                                     points[i] = tab[i];
                                     //zmiana gracza
                                 }
-                                if(selected[i] == 1)
-                                    board.table.setValueAt( points[i], i, 1 );
+
                             }
                             if(player == 1) {
                                 if (board.table.isRowSelected( i ) == false && selected[i] == 0) {
@@ -181,8 +180,6 @@ public class Main {
                                     points[i] = tab[i];
                                     //zmiana gracza
                                 }
-                                if(selected[i] == 1)
-                                    board.table.setValueAt( points[i], i, 1 );
                             }
 
                         }
@@ -248,7 +245,7 @@ public class Main {
                             board.table.setValueAt( tab[i], i, 2 );
                         }
                     }
-                    else {
+                    if(player == 1){
                         for (int i = 0; i < 15; i++) {
                             board.table.setValueAt( tab[i], i, 1 );
                         }

@@ -8,6 +8,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.stream.Stream;
@@ -45,20 +46,20 @@ public class Main {
         z5 = new ImageIcon("src/zaznaczenie5.png");
         z6 = new ImageIcon("src/zaznaczenie6.png");
 
-            player1Name = JOptionPane.showInputDialog("Enter your name");
-            if(player1Name == null){
-                player1Name = "Gracz 1";
-            }
+        player1Name = JOptionPane.showInputDialog("Enter your name");
+        if(player1Name == null){
+            player1Name = "Gracz 1";
+        }
 
-
-        //tworzenie serwera i klienta
+        //tworzenie serwera
         ServerSocket ss = null;
         Socket s = null;
         try {
-                turn = true;
-                ss = new ServerSocket( 4999 );
-                s = ss.accept();
-
+            InetAddress address = InetAddress.getByName("172.20.10.2");
+            turn = true;
+          //  ss = new ServerSocket( 4999, 50, address );
+            ss = new ServerSocket( 4999 );
+            s = ss.accept();
             pr = new PrintWriter( s.getOutputStream());
         } catch (IOException e1) {
             e1.printStackTrace();
@@ -79,8 +80,6 @@ public class Main {
 
         Board board = new Board();
         board.createBoard();
-
-
 
         board.imp.addMouseListener(new MouseAdapter(){
             @Override
@@ -217,7 +216,6 @@ public class Main {
                 pr.flush();
                 click1 = false; click2 = false; click3 = false; click4 = false; click5 = false;
                 pr.flush();
-                gameLength += 1;
                 board.text.setText("Tura gracza: " + "\n" + player2Name + "\nPozostało \nrzutów: " + 3);
 
                 for (int i = 0; i < 17; i++) {
@@ -247,13 +245,11 @@ public class Main {
                 int code = 11;
                 pr.println( code );
                 rolls = 3;
-                if(gameLength > 12)
-                    game = false;
+                System.out.println( gameLength );
                 pr.println( code );
                 pr.flush();
             }
-            }
-            );
+        } );
         while(game) {
             String str;
             int[] message;
@@ -266,7 +262,7 @@ public class Main {
             while (!turn) {
                 try {
                     str = bf.readLine();
-                    System.out.println( "otrzymano: " + str );
+                    //System.out.println( "otrzymano: " + str );
                     message = parseSocketMsg( str );
                     if (message.length == 5) {
                         dice1 = getDice( message[0] );
@@ -285,15 +281,33 @@ public class Main {
                     }
 
                     if (message[0] == 11) {
+                        gameLength +=1;
                         turn = true;
                         rolls = 3;
                         board.text.setText("Tura gracza: " + "\n" + player1Name + "\nPozostało \nrzutów: " + rolls);
-                        System.out.println(turn);
+                        if(gameLength > 12) {
+                            System.out.println( "Koniec gry" );
+                            game = false;
+                            int suma1 = Integer.parseInt( String.valueOf( board.table.getValueAt( 16, 1 )));
+                            int suma2 = Integer.parseInt( String.valueOf( board.table.getValueAt( 16, 2 )));
+                            if(suma1>suma2) {
+                                String wygrany = player1Name;
+                                JOptionPane.showConfirmDialog(null,"Koniec rozgrywki, wygrał/a:" + player1Name, "Tytuł okienka", JOptionPane.CANCEL_OPTION);
+                            }
+                            if(suma1 < suma2){
+                                String wygrany = player2Name;
+                                JOptionPane.showConfirmDialog(null,"Koniec rozgrywki, wygrał:" + player2Name,"Tytuł okienka", JOptionPane.CANCEL_OPTION);
+                            }
+                            if(suma1 == suma2) {
+                                String wygrany = "remis";
+                                JOptionPane.showConfirmDialog(null,"Koniec rozgrywki, remis","Tytuł okienka", JOptionPane.CANCEL_OPTION);
+                            }
+                        }
                     }
                     if(message.length == 2) {
                         board.table.setValueAt( message[1], message[0], 2 );
                     }
-                    System.out.println( message );
+                    //System.out.println( message );
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }

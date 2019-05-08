@@ -1,12 +1,12 @@
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
-import java.util.concurrent.Flow;
 
 public class DialogueWindow {
 
     JFrame frame;
-    JPanel panel;
-    JTextArea textInput;
+    JPanel panel2;
+    JTextArea textInput, area;
     JButton sendButton;
 
     public void createWindow(){
@@ -15,18 +15,23 @@ public class DialogueWindow {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setPreferredSize(new Dimension(600, 500));
 
-        panel = new JPanel();
-        panel.setPreferredSize(new Dimension(600, 100));
-        frame.add(panel, BorderLayout.SOUTH);
+        area = new JTextArea();
+        area.setPreferredSize(new Dimension(600, 350));
+        area.setBackground(Color.PINK);
+        frame.add(area, BorderLayout.NORTH);
+
+        panel2 = new JPanel();
+        panel2.setPreferredSize(new Dimension(600, 100));
+        frame.add(panel2, BorderLayout.SOUTH);
 
         textInput = new JTextArea();
         textInput.setPreferredSize(new Dimension(400, 100));
         textInput.setBackground(Color.CYAN);
-        panel.add(textInput, new FlowLayout(FlowLayout.LEFT));
+        panel2.add(textInput, new FlowLayout(FlowLayout.LEFT));
 
         sendButton = new JButton("Wyślij");
-        sendButton.setPreferredSize(new Dimension(150, 100));
-        panel.add(sendButton, new FlowLayout(FlowLayout.RIGHT));
+        sendButton.setPreferredSize(new Dimension(150, 80));
+        panel2.add(sendButton, new FlowLayout(FlowLayout.RIGHT));
 
 
 

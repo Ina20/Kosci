@@ -33,5 +33,4 @@ public class TableModel extends AbstractTableModel {
         return columnNames[col];
     }
 
-
 }

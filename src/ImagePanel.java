@@ -30,7 +30,7 @@ public class ImagePanel extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        bg1 = new ImageIcon("src/imp_bg.png");
+        bg1 = new ImageIcon("src/Images/imp_bg.png");
         if(Main.click1) {
             g.drawImage(bg1.getImage(), 0, 0, null);
             g.drawImage(image, 10, 10, this);

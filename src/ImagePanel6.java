@@ -8,7 +8,7 @@ public class ImagePanel6 extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        button_bg = new ImageIcon("src/button_bg.png");
+        button_bg = new ImageIcon("src/Images/button_bg.png");
         g.drawImage(button_bg.getImage(), 0, 0, null);
     }
 }

@@ -19,9 +19,6 @@ public class Board {
     JScrollPane scrollPane;
     JTextArea text;
 
-    ImageIcon button_bg = new ImageIcon("src/button_bg.png");
-    ImageIcon table_bg = new ImageIcon("src/table_bg.png");
-
     public void createBoard() {
 
         GridBagLayout layout = new GridBagLayout();
@@ -116,16 +113,22 @@ public class Board {
                     jc.setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, Color.WHITE));
                 }
 
-                if (isRowSelected(row) && row != 6 && row != 7 && row != 15 && row != 16) {
-                    int top = (row > 0 && isRowSelected(row - 1)) ? 1 : 2;
-                    int left = column == 0 ? 2 : 0;
-                    int bottom = (row < getRowCount() - 1 && isRowSelected(row + 1)) ? 1 : 2;
-                    int right = column == getColumnCount() - 1 ? 2 : 0;
+                /*
+                    if (isRowSelected(row) && row != 6 && row != 7 && row != 15 && row != 16) {
+                        int top = (row > 0 && isRowSelected(row - 1)) ? 1 : 2;
+                        int left = column == 0 ? 2 : 0;
+                        int bottom = (row < getRowCount() - 1 && isRowSelected(row + 1)) ? 1 : 2;
+                        int right = column == getColumnCount() - 1 ? 2 : 0;
+                        jc.setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, this.getSelectionBackground()));
+                    }
+*/
+                            if (isRowSelected(row)) {
+                                jc.setForeground(Color.LIGHT_GRAY);
+                            } else {
+                                jc.setForeground(Color.WHITE);
+                            }
 
-                    jc.setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, this.getSelectionBackground()));
-                }
-
-                if(column == 1 || column == 2){
+                if(column == 1 || column == 2) {
                     jc.setFont(new Font("Kalam", Font.BOLD, 16));
                 }
 
@@ -137,6 +140,7 @@ public class Board {
         for (int i = 0; i < 18; i++) {
             table.setRowHeight(i, 35);
         }
+
         table.setRowSelectionAllowed(false);
 
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();

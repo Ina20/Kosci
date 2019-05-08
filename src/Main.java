@@ -8,8 +8,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.InetAddress;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.stream.Stream;
 
@@ -46,24 +44,24 @@ public class Main {
         z5 = new ImageIcon("src/zaznaczenie5.png");
         z6 = new ImageIcon("src/zaznaczenie6.png");
 
-        player1Name = JOptionPane.showInputDialog("Enter your name");
-        if(player1Name == null){
-            player1Name = "Gracz 1";
+
+        player2Name = JOptionPane.showInputDialog("Enter your name");
+        if(player2Name == null){
+            player2Name = "Gracz 2";
         }
 
-        //tworzenie serwera
-        ServerSocket ss = null;
+        //tworzenie klienta
         Socket s = null;
         try {
-            InetAddress address = InetAddress.getByName("172.20.10.2");
-            turn = true;
-          //  ss = new ServerSocket( 4999, 50, address );
-            ss = new ServerSocket( 4999 );
-            s = ss.accept();
+            //s = new Socket("172.20.10.2", 4999); // change ip
+            s = new Socket("localhost",4999);
             pr = new PrintWriter( s.getOutputStream());
         } catch (IOException e1) {
             e1.printStackTrace();
         }
+
+        pr.println( player2Name );
+        pr.flush();
         InputStreamReader in = null;
         BufferedReader bf = null;
         String name;
@@ -71,9 +69,7 @@ public class Main {
             in = new InputStreamReader( s.getInputStream() );
             bf = new BufferedReader( in );
             name = bf.readLine();
-            player2Name = name;
-            pr.println( player1Name );
-            pr.flush();
+            player1Name = name;
         } catch (IOException e1) {
             e1.printStackTrace();
         }
@@ -151,7 +147,7 @@ public class Main {
                     GameLogic l = new GameLogic();
                     if (rolls > 0) {
                         rolls -= 1;
-                        board.text.setText("Tura gracza: " + "\n" + player1Name + "\nPozostało \nrzutów: " + rolls);
+                        board.text.setText("Tura gracza: " + "\n" + player2Name + "\nPozostało \nrzutów: " + rolls);
 
                         if (!click1) {
                             kostka1 = l.roll();
@@ -182,18 +178,20 @@ public class Main {
                         int tab[] = l.check( kostka1, kostka2, kostka3, kostka4, kostka5 );
 
                         for (int i = 0; i < 17; i++) {
+
                                 if (board.table.isRowSelected( i ) == false && selected[i] == 0) {
-                                    board.table.setValueAt( tab[i], i, 1 );
-                                    board.table.setValueAt(suma11,7,1);
-                                    board.table.setValueAt(suma12,15,1);
-                                    if(suma11 >= 63){
-                                        board.table.setValueAt("35", 6, 1);
+                                    board.table.setValueAt( tab[i], i, 2 );
+                                    board.table.setValueAt(suma21,7,2);
+                                    board.table.setValueAt(suma22,15,2);
+                                    if(suma21 >= 63){
+                                        board.table.setValueAt("35", 6, 2);
                                     }
-                                    board.table.setValueAt(razem,16,1);                                }
-                                else {
+                                    board.table.setValueAt(razem1,16,2);                                }
+                                else{
                                     selected[i] = 1;
                                 }
-                        }
+
+                            }
                         board.imp.setImage( dice1, zaz1 );
                         board.imp1.setImage( dice2, zaz2 );
                         board.imp2.setImage( dice3, zaz3 );
@@ -211,34 +209,35 @@ public class Main {
         board.button1.addActionListener( new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                gameLength += 1;
                 kostka1 = 0; kostka2 = 0; kostka3 = 0; kostka4 = 0; kostka5 = 0;
                 pr.println( kostka1 + "," + kostka2 + "," + kostka3 + "," + kostka4 + "," + kostka5 );
                 pr.flush();
                 click1 = false; click2 = false; click3 = false; click4 = false; click5 = false;
                 pr.flush();
-                board.text.setText("Tura gracza: " + "\n" + player2Name + "\nPozostało \nrzutów: " + 3);
-
+                board.text.setText("Tura gracza: " + "\n" + player1Name + "\nPozostało \nrzutów: " + 3);
                 for (int i = 0; i < 17; i++) {
-                        board.table.setValueAt(suma11, 7, 1);
-                        board.table.setValueAt(suma12, 15, 1);
-                        if(suma11 >= 63){
-                            board.table.setValueAt("35", 6, 1);
+                    board.table.setValueAt(suma21, 7, 2);
+                    board.table.setValueAt(suma22, 15, 2);
+                    if(suma21 >= 63){
+                        board.table.setValueAt("35", 6, 2);
+                    }
+                    razem1 = suma21 + suma22 + Integer.parseInt( String.valueOf( board.table.getValueAt( 6, 2 ) ));
+                    board.table.setValueAt(razem1,16,2);
+                    if (board.table.isRowSelected( i ) == true) {
+                        if (i < 7) {
+                            suma21 += Integer.parseInt( String.valueOf( board.table.getValueAt( i, 2 ) ) );
+                        } else if (7 < i && i < 15) {
+                            suma22 += Integer.parseInt( String.valueOf( board.table.getValueAt( i, 2 ) ) );
                         }
-                        razem = suma11 + suma12 + Integer.parseInt( String.valueOf( board.table.getValueAt( 6, 1 ) ));
-                        board.table.setValueAt(razem,16,1);
-                        if (board.table.isRowSelected( i ) == true) {
-                            if (i < 7) {
-                                suma11 += Integer.parseInt( String.valueOf( board.table.getValueAt( i, 1 ) ) );
-                            } else if (7 < i && i < 15) {
-                                suma12 += Integer.parseInt( String.valueOf( board.table.getValueAt( i, 1 ) ) );
-                            }
-                            a = Integer.parseInt( String.valueOf( board.table.getValueAt( i, 1 ) ) );
-                            b = i;
-                        }
-                        pr.println(6 + "," + Integer.parseInt( String.valueOf( board.table.getValueAt( 6, 1))));
-                        pr.println( 7 + "," + Integer.parseInt( String.valueOf( board.table.getValueAt( 7, 1 ) ) ) );
-                        pr.println( 15 + "," + Integer.parseInt( String.valueOf( board.table.getValueAt( 15, 1 ) ) ) );
-                        pr.println( 16 + "," + Integer.parseInt( String.valueOf( board.table.getValueAt( 16, 1 ) ) ) );
+                        a = Integer.parseInt( String.valueOf( board.table.getValueAt( i, 2 ) ) );
+                        b = i;
+                    }
+                    pr.println(6 + "," + Integer.parseInt( String.valueOf( board.table.getValueAt( 6, 2))));
+                    pr.println( 7 + "," + Integer.parseInt( String.valueOf( board.table.getValueAt( 7, 2 ) ) ) );
+                    pr.println( 15 + "," + Integer.parseInt( String.valueOf( board.table.getValueAt( 15, 2 ) ) ) );
+                    pr.println( 16 + "," + Integer.parseInt( String.valueOf( board.table.getValueAt( 16, 2 ) ) ) );
+
                 }
                 pr.println(b + "," + a);
                 turn = false;
@@ -246,10 +245,29 @@ public class Main {
                 pr.println( code );
                 rolls = 3;
                 System.out.println( gameLength );
+                if(gameLength > 12) {
+                    System.out.println( "Koniec gry" );
+                    game = false;
+                    int suma1 = Integer.parseInt( String.valueOf( board.table.getValueAt( 16, 1 )));
+                    int suma2 = Integer.parseInt( String.valueOf( board.table.getValueAt( 16, 2 )));
+                    if(suma1>suma2) {
+                        String wygrany = player1Name;
+                        int a = JOptionPane.showConfirmDialog(null,"Koniec rozgrywki, wygrał/a:" + player1Name, "Tytuł okienka", JOptionPane.CANCEL_OPTION);
+                    }
+                    if(suma1 < suma2){
+                        String wygrany = player2Name;
+                        int a = JOptionPane.showConfirmDialog(null,"Koniec rozgrywki, wygrał/a:" + player2Name,"Tytuł okienka", JOptionPane.CANCEL_OPTION);
+                    }
+                    if(suma1 == suma2){
+                        String wygrany = "remis";
+                        int a = JOptionPane.showConfirmDialog(null,"Koniec rozgrywki, remis","Tytuł okienka", JOptionPane.CANCEL_OPTION);
+                    }
+                }
                 pr.println( code );
                 pr.flush();
             }
-        } );
+            }
+            );
         while(game) {
             String str;
             int[] message;
@@ -262,7 +280,7 @@ public class Main {
             while (!turn) {
                 try {
                     str = bf.readLine();
-                    //System.out.println( "otrzymano: " + str );
+                    System.out.println( "otrzymano: " + str );
                     message = parseSocketMsg( str );
                     if (message.length == 5) {
                         dice1 = getDice( message[0] );
@@ -281,41 +299,24 @@ public class Main {
                     }
 
                     if (message[0] == 11) {
-                        gameLength +=1;
                         turn = true;
                         rolls = 3;
-                        board.text.setText("Tura gracza: " + "\n" + player1Name + "\nPozostało \nrzutów: " + rolls);
-                        if(gameLength > 12) {
-                            System.out.println( "Koniec gry" );
-                            game = false;
-                            int suma1 = Integer.parseInt( String.valueOf( board.table.getValueAt( 16, 1 )));
-                            int suma2 = Integer.parseInt( String.valueOf( board.table.getValueAt( 16, 2 )));
-                            if(suma1>suma2) {
-                                String wygrany = player1Name;
-                                JOptionPane.showConfirmDialog(null,"Koniec rozgrywki, wygrał/a:" + player1Name, "Tytuł okienka", JOptionPane.CANCEL_OPTION);
-                            }
-                            if(suma1 < suma2){
-                                String wygrany = player2Name;
-                                JOptionPane.showConfirmDialog(null,"Koniec rozgrywki, wygrał:" + player2Name,"Tytuł okienka", JOptionPane.CANCEL_OPTION);
-                            }
-                            if(suma1 == suma2) {
-                                String wygrany = "remis";
-                                JOptionPane.showConfirmDialog(null,"Koniec rozgrywki, remis","Tytuł okienka", JOptionPane.CANCEL_OPTION);
-                            }
-                        }
+                        board.text.setText("Tura gracza: " + "\n" + player2Name + "\nPozostało \nrzutów: " + rolls);
+                        System.out.println(turn);
                     }
                     if(message.length == 2) {
-                        board.table.setValueAt( message[1], message[0], 2 );
+                        board.table.setValueAt( message[1], message[0], 1 );
                     }
-                    //System.out.println( message );
+
+                    System.out.println( message );
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
             }
         }
-
 }
-private static Image getZaz(int kostka) {
+
+    private static Image getZaz(int kostka) {
         Image zaz;
         switch (kostka) {
             case 1:

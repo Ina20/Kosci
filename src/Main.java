@@ -26,35 +26,38 @@ public class Main {
     static String player1Name = "Gracz 1", player2Name = "Gracz 2";
     static int a, b;
     static int suma11, suma12, suma21, suma22, razem, razem1;
+    static String ip;
 
     public static void main(String[] args){
 
         GameLogic l = new GameLogic();
 
-        d1 = new ImageIcon("src/kostka1.png");
-        d2 = new ImageIcon("src/kostka2.png");
-        d3 = new ImageIcon("src/kostka3.png");
-        d4 = new ImageIcon("src/kostka4.png");
-        d5 = new ImageIcon("src/kostka5.png");
-        d6 = new ImageIcon("src/kostka6.png");
-        z1 = new ImageIcon("src/zaznaczenie1.png");
-        z2 = new ImageIcon("src/zaznaczenie2.png");
-        z3 = new ImageIcon("src/zaznaczenie3.png");
-        z4 = new ImageIcon("src/zaznaczenie4.png");
-        z5 = new ImageIcon("src/zaznaczenie5.png");
-        z6 = new ImageIcon("src/zaznaczenie6.png");
+        d1 = new ImageIcon("src/Images/kostka1.png");
+        d2 = new ImageIcon("src/Images/kostka2.png");
+        d3 = new ImageIcon("src/Images/kostka3.png");
+        d4 = new ImageIcon("src/Images/kostka4.png");
+        d5 = new ImageIcon("src/Images/kostka5.png");
+        d6 = new ImageIcon("src/Images/kostka6.png");
+        z1 = new ImageIcon("src/Images/zaznaczenie1.png");
+        z2 = new ImageIcon("src/Images/zaznaczenie2.png");
+        z3 = new ImageIcon("src/Images/zaznaczenie3.png");
+        z4 = new ImageIcon("src/Images/zaznaczenie4.png");
+        z5 = new ImageIcon("src/Images/zaznaczenie5.png");
+        z6 = new ImageIcon("src/Images/zaznaczenie6.png");
 
 
-        player2Name = JOptionPane.showInputDialog("Enter your name");
+        player2Name = JOptionPane.showInputDialog("Podaj swoję imię");
         if(player2Name == null){
             player2Name = "Gracz 2";
         }
 
+        ip = JOptionPane.showInputDialog("Podaj ip serwera w postaci xxx.xxx.xxx.xxx");
+
         //tworzenie klienta
         Socket s = null;
         try {
-            //s = new Socket("172.20.10.2", 4999); // change ip
-            s = new Socket("localhost",4999);
+            s = new Socket(ip, 4999); // change ip
+           // s = new Socket("localhost",400);
             pr = new PrintWriter( s.getOutputStream());
         } catch (IOException e1) {
             e1.printStackTrace();

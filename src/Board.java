@@ -19,9 +19,6 @@ public class Board {
     JScrollPane scrollPane;
     JTextArea text;
 
-    ImageIcon button_bg = new ImageIcon("src/button_bg.png");
-    ImageIcon table_bg = new ImageIcon("src/table_bg.png");
-
     public void createBoard() {
 
         GridBagLayout layout = new GridBagLayout();
@@ -115,7 +112,7 @@ public class Board {
                     int right = 0;
                     jc.setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, Color.WHITE));
                 }
-
+/*
                 if (isRowSelected(row) && row != 6 && row != 7 && row != 15 && row != 16) {
                     int top = (row > 0 && isRowSelected(row - 1)) ? 1 : 2;
                     int left = column == 0 ? 2 : 0;
@@ -123,6 +120,12 @@ public class Board {
                     int right = column == getColumnCount() - 1 ? 2 : 0;
 
                     jc.setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, this.getSelectionBackground()));
+                }
+*/
+                if (isRowSelected(row)) {
+                    jc.setForeground(Color.LIGHT_GRAY);
+                } else {
+                    jc.setForeground(Color.WHITE);
                 }
 
                 if(column == 1 || column == 2){

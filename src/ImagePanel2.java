@@ -23,7 +23,7 @@ public class ImagePanel2 extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        bg3 = new ImageIcon("src/imp2_bg.png");
+        bg3 = new ImageIcon("src/Images/imp2_bg.png");
         if(Main.click3) {
             g.drawImage(bg3.getImage(), 0, 0, null);
             g.drawImage(image2, 10, 10, this);

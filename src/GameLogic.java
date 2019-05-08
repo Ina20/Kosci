@@ -69,6 +69,7 @@ public class GameLogic {
                    (dicesValue[4] == 0 && dicesValue[5] == 0) ||
                    (dicesValue[0] == 0 && dicesValue[5] == 0)))
                    score[11] = 30;
+
                if(msOrDs == 5 && (dicesValue[0] == 0 || dicesValue[5]==0)) {
                    score[12] = 40;
                    score[11] = 30;

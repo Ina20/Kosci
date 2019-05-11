@@ -2,8 +2,8 @@ import javax.swing.table.AbstractTableModel;
 
 public class TableModel extends AbstractTableModel {
 
-    String[] columnNames = {"",Main.player1Name, Main.player2Name};
-    Object[][] data = {{"Jedynki","",""},{"Dwójki","",""},{"Trójki","",""},{"Czwórki","",""},{"Piątki","",""},{"Szóstki","",""},{"Premia","",""},{"Suma","",""},{"3 jednakowe","",""},{"4 jednakowe","",""},{"Ful","",""},{"Mały strit","",""},{"Duży strit","",""},{"Generał","",""},{"Szansa","",""},{"Suma","",""},{"Razem","",""}};
+    String[] columnNames = {"",Main.player1Name, Main.player2Name,""};
+    Object[][] data = {{"Jedynki","","",""},{"Dwójki","","",""},{"Trójki","","",""},{"Czwórki","","",""},{"Piątki","","",""},{"Szóstki","","",""},{"Premia","","",""},{"Suma","","",""},{"3 jednakowe","","",""},{"4 jednakowe","","",""},{"Ful","","",""},{"Mały strit","","",""},{"Duży strit","","",""},{"Generał","","",""},{"Szansa","","",""},{"Suma","","",""},{"Razem","","",""}};
 
     @Override
     public int getRowCount() {

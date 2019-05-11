@@ -73,7 +73,7 @@ public class Board {
         button1.setForeground(Color.WHITE);
 
         text = new JTextArea(  );
-        text.setPreferredSize(new Dimension(100,70));
+        text.setPreferredSize(new Dimension(100,80));
         text.setOpaque(false);
         text.setFont(new Font("Kalam", Font.BOLD, 12));
         text.setBorder(null);
@@ -85,7 +85,7 @@ public class Board {
         imp6.add(button, new FlowLayout(FlowLayout.CENTER));
         imp6.add(button1, new FlowLayout(FlowLayout.LEFT));
         imp6.add(text, new FlowLayout( FlowLayout.RIGHT ));
-        c = new GridBagConstraints(1, 5, 1, 1, 0.6, 0.2, GridBagConstraints.PAGE_END, GridBagConstraints.BOTH, insets, 100, 50);
+        c = new GridBagConstraints(1, 5, 1, 1, 0.6, 0.2, GridBagConstraints.PAGE_END, GridBagConstraints.BOTH, insets, 100, 30);
         frame.getContentPane().add(imp6, c);
 
 
@@ -112,24 +112,24 @@ public class Board {
                     int right = 0;
                     jc.setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, Color.WHITE));
                 }
+/*
+                if (isRowSelected(row) && row != 6 && row != 7 && row != 15 && row != 16) {
+                    int top = (row > 0 && isRowSelected(row - 1)) ? 1 : 2;
+                    int left = column == 0 ? 2 : 0;
+                    int bottom = (row < getRowCount() - 1 && isRowSelected(row + 1)) ? 1 : 2;
+                    int right = column == getColumnCount() - 1 ? 2 : 0;
 
-                /*
-                    if (isRowSelected(row) && row != 6 && row != 7 && row != 15 && row != 16) {
-                        int top = (row > 0 && isRowSelected(row - 1)) ? 1 : 2;
-                        int left = column == 0 ? 2 : 0;
-                        int bottom = (row < getRowCount() - 1 && isRowSelected(row + 1)) ? 1 : 2;
-                        int right = column == getColumnCount() - 1 ? 2 : 0;
-                        jc.setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, this.getSelectionBackground()));
-                    }
+                    jc.setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, this.getSelectionBackground()));
+                }
 */
-                            if (isRowSelected(row)) {
-                                jc.setForeground(Color.LIGHT_GRAY);
-                            } else {
-                                jc.setForeground(Color.WHITE);
-                            }
+                if (isRowSelected(row) && row != 6 && row != 7 && row != 15 && row != 16) {
+                    jc.setForeground(Color.LIGHT_GRAY);
+                } else {
+                    jc.setForeground(Color.WHITE);
+                }
 
-                if(column == 1 || column == 2) {
-                    jc.setFont(new Font("Kalam", Font.BOLD, 16));
+                if(column == 1 || column == 2 || column == 3){
+                    jc.setFont(new Font("Kalam", Font.BOLD, 19));
                 }
 
                 return c;
@@ -140,12 +140,13 @@ public class Board {
         for (int i = 0; i < 18; i++) {
             table.setRowHeight(i, 35);
         }
-
         table.setRowSelectionAllowed(false);
+
+        table.getColumnModel().getColumn(3).setPreferredWidth(10);
 
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 4; i++) {
             table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
 
@@ -154,11 +155,11 @@ public class Board {
 
         imp5 = new ImagePanel5();
         imp5.setPreferredSize(new Dimension(300, 700));
-        c = new GridBagConstraints(0, 0, 1, 6, 0.4, 1, GridBagConstraints.FIRST_LINE_START, GridBagConstraints.BOTH, insets, 210, 0);
+        c = new GridBagConstraints(0, 0, 1, 6, 0.4, 1, GridBagConstraints.FIRST_LINE_START, GridBagConstraints.BOTH, insets, 160, 0);
         frame.getContentPane().add(imp5, c);
         imp5.add(scrollPane);
 
-        table.setFont(new Font("Kalam", Font.BOLD, 12));
+        table.setFont(new Font("Kalam", Font.BOLD, 14));
         table.setForeground(Color.white);
         table.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.WHITE));
 
